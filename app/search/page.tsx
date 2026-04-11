@@ -17,15 +17,29 @@ export function generateMetadata({ searchParams }: Props) {
   };
 }
 
+const GOLD  = "#B8974A";
+const CREAM = "#F5F0E8";
+const NAVY  = "#0E1B2E";
+const MUTED = "#5A6E85";
+
+const NAV_LINKS = [
+  { label: "タグ図鑑",     href: "/brands" },
+  { label: "お手入れ",     href: "/care" },
+  { label: "シミ取り",     href: "/care/stain" },
+  { label: "古着屋を探す", href: "/shops" },
+  { label: "コラボ",       href: "/collabs" },
+  { label: "トレンド",     href: "/trend" },
+];
+
 export default function SearchPage({ searchParams }: Props) {
   const keyword = (searchParams.q || "").trim();
 
   if (!keyword) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="font-body text-ink-muted mb-4">キーワードが入力されていません</p>
-          <Link href="/" className="font-mono text-xs text-rust underline underline-offset-4 tracking-wide">
+      <div style={{ background: NAVY, minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Helvetica Neue', sans-serif" }}>
+        <div style={{ textAlign: "center" }}>
+          <p style={{ fontSize: 14, color: MUTED, marginBottom: 16 }}>キーワードが入力されていません</p>
+          <Link href="/" style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: GOLD, textDecoration: "none" }}>
             トップへ戻る →
           </Link>
         </div>
@@ -34,50 +48,64 @@ export default function SearchPage({ searchParams }: Props) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div style={{ background: NAVY, minHeight: "100vh", fontFamily: "'Helvetica Neue', sans-serif" }}>
+
       {/* ── Sticky header ── */}
-      <header className="sticky top-0 z-40 border-b-2 border-ink-DEFAULT bg-cream-100/95 backdrop-blur-sm px-6 py-3">
-        <div className="max-w-5xl mx-auto flex items-center gap-5">
-          <Link
-            href="/"
-            className="font-display text-xl font-black text-ink-DEFAULT tracking-tighter shrink-0 hover:text-rust transition-colors"
-          >
-            FURUGIRU
-          </Link>
-          <div className="flex-1 max-w-xl">
-            <SearchBar defaultValue={keyword} size="md" />
-          </div>
+      <header style={{
+        position: "sticky", top: 0, zIndex: 40,
+        borderBottom: "1px solid rgba(184,151,74,.2)",
+        padding: "12px 24px", background: NAVY,
+        display: "flex", alignItems: "center", gap: 20,
+      }}>
+        <Link href="/" style={{ fontSize: 18, letterSpacing: "0.2em", color: CREAM, textDecoration: "none", fontFamily: "Georgia, serif", flexShrink: 0 }}>
+          FURU<span style={{ color: GOLD }}>GIRU</span>
+        </Link>
+        <div style={{ flex: 1, maxWidth: 560 }}>
+          <SearchBar defaultValue={keyword} size="md" />
         </div>
+        <nav style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "flex-end" }}>
+          {NAV_LINKS.map(({ label, href }) => (
+            <Link key={href} href={href} style={{
+              fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase",
+              color: MUTED, textDecoration: "none",
+            }}>
+              {label}
+            </Link>
+          ))}
+        </nav>
       </header>
 
       {/* ── Top ad ── */}
-      <div className="max-w-5xl mx-auto w-full px-6 pt-5">
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "20px 24px 0" }}>
         <AdSense slot="3333333333" format="horizontal" className="w-full" />
       </div>
 
-      <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-8 flex flex-col gap-10">
+      <main style={{ maxWidth: 900, margin: "0 auto", padding: "32px 24px", display: "flex", flexDirection: "column", gap: 40 }}>
 
         {/* ── Search title ── */}
-        <div className="border-b-2 border-ink-DEFAULT pb-5">
-          <p className="font-mono text-[10px] text-ink-faint tracking-widest uppercase mb-1">
+        <div style={{ borderBottom: "1px solid rgba(184,151,74,.2)", paddingBottom: 20 }}>
+          <p style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: MUTED, marginBottom: 6 }}>
             検索結果
           </p>
-          <h1 className="font-display text-4xl lg:text-5xl font-black text-ink-DEFAULT leading-tight tracking-tight">
+          <h1 style={{
+            fontSize: "clamp(28px,6vw,48px)", fontWeight: 300, letterSpacing: "-0.02em",
+            color: CREAM, lineHeight: 1.1, fontFamily: "Georgia, serif",
+          }}>
             &ldquo;{keyword}&rdquo;
           </h1>
         </div>
 
         {/* ── Flea market cards ── */}
         <section>
-          <div className="flex items-baseline gap-3 mb-5">
-            <h2 className="font-display text-2xl font-bold text-ink-DEFAULT">
+          <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 20 }}>
+            <h2 style={{ fontSize: 22, fontWeight: 300, color: CREAM, fontFamily: "Georgia, serif" }}>
               フリマで探す
             </h2>
-            <span className="font-mono text-[10px] text-ink-faint tracking-widest uppercase">
+            <span style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: MUTED }}>
               3サイト一括
             </span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 16 }}>
             {MARKETS.map((market, i) => (
               <MarketCard key={market.id} market={market} keyword={keyword} index={i} />
             ))}
@@ -91,11 +119,11 @@ export default function SearchPage({ searchParams }: Props) {
         <RakutenSection keyword={keyword} />
 
         {/* ── Tips ── */}
-        <section className="border-2 border-ink-DEFAULT/20 p-6 bg-cream-50">
-          <h2 className="font-display text-lg font-bold text-ink-DEFAULT mb-4">
+        <section style={{ border: "1px solid rgba(184,151,74,.2)", padding: 24, background: "rgba(255,255,255,.03)" }}>
+          <h2 style={{ fontSize: 18, fontWeight: 300, color: CREAM, fontFamily: "Georgia, serif", marginBottom: 16 }}>
             古着を買うときのチェックポイント
           </h2>
-          <ul className="space-y-2">
+          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
             {[
               "楽天の新品価格と比べて、フリマ価格が適正かを確認しましょう",
               "商品の状態ランク（S〜C）を必ずチェック。写真の枚数も重要です",
@@ -103,8 +131,8 @@ export default function SearchPage({ searchParams }: Props) {
               "複数のフリマを比較して最安値を見つけましょう",
               "出品者の評価・評判を必ず確認してから購入を検討しましょう",
             ].map((tip, i) => (
-              <li key={i} className="flex items-start gap-3 font-body text-sm text-ink-muted">
-                <span className="text-rust font-display font-bold mt-0.5 shrink-0">—</span>
+              <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, fontSize: 13, color: "rgba(245,240,232,.7)", lineHeight: 1.7 }}>
+                <span style={{ color: GOLD, fontFamily: "Georgia, serif", fontWeight: 700, flexShrink: 0 }}>—</span>
                 {tip}
               </li>
             ))}
@@ -116,18 +144,21 @@ export default function SearchPage({ searchParams }: Props) {
       </main>
 
       {/* ── Footer ── */}
-      <footer className="border-t-2 border-ink-DEFAULT/10 py-8 mt-4">
-        <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <Link href="/" className="font-display text-lg font-black text-ink-DEFAULT tracking-tighter hover:text-rust transition-colors">
-            FURUGIRU
+      <footer style={{
+        borderTop: "1px solid rgba(184,151,74,.1)", padding: "28px 24px",
+        marginTop: 16,
+      }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+          <Link href="/" style={{ fontSize: 18, letterSpacing: "0.2em", color: CREAM, textDecoration: "none", fontFamily: "Georgia, serif" }}>
+            FURU<span style={{ color: GOLD }}>GIRU</span>
           </Link>
-          <div className="font-mono text-[10px] text-ink-faint text-center">
+          <div style={{ fontSize: 10, color: "rgba(245,240,232,.2)", letterSpacing: "0.04em", textAlign: "center" }}>
             <p>© 2026 FURUGIRU — 古着フリマ一括比較サイト</p>
             <p>本サイトはメルカリ・ラクマ・ヤフオクの公式サービスではありません。</p>
           </div>
-          <div className="flex gap-4">
-            <a href="#" className="font-mono text-[10px] text-ink-faint hover:text-ink-DEFAULT tracking-widest uppercase">利用規約</a>
-            <a href="#" className="font-mono text-[10px] text-ink-faint hover:text-ink-DEFAULT tracking-widest uppercase">プライバシー</a>
+          <div style={{ display: "flex", gap: 16 }}>
+            <a href="#" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(245,240,232,.2)", textDecoration: "none" }}>利用規約</a>
+            <a href="#" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(245,240,232,.2)", textDecoration: "none" }}>プライバシー</a>
           </div>
         </div>
       </footer>

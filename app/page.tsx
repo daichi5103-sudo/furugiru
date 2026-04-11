@@ -1,7 +1,4 @@
-"use client";
 import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { TRENDING } from "@/lib/markets";
 
 const GOLD  = "#B8974A";
@@ -29,10 +26,6 @@ const FEATURES = [
 ];
 
 export default function HomePage() {
-  const [query, setQuery] = useState("");
-  const router = useRouter();
-  const go = () => { if (query.trim()) router.push(`/search?q=${encodeURIComponent(query.trim())}`); };
-
   return (
     <div style={{ background: NAVY, minHeight: "100vh", fontFamily: "'Helvetica Neue', sans-serif" }}>
 
@@ -75,33 +68,31 @@ export default function HomePage() {
         </p>
 
         {/* Search bar */}
-        <div style={{ display: "flex", gap: 0, maxWidth: 560, marginBottom: 20 }}>
+        <form action="/search" method="get" style={{ display: "flex", maxWidth: 560, marginBottom: 20 }}>
           <div style={{ position: "relative", flex: 1 }}>
             <svg style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)" }}
               width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={MUTED} strokeWidth="2">
               <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
             </svg>
             <input
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-              onKeyDown={e => e.key === "Enter" && go()}
+              name="q"
               placeholder="ブランド名・商品名を入力…"
               style={{
                 width: "100%", padding: "14px 14px 14px 38px",
                 background: "rgba(255,255,255,.05)", border: `1px solid rgba(184,151,74,.35)`,
                 borderRight: "none", color: CREAM, fontSize: 14, outline: "none",
-                boxSizing: "border-box",
+                boxSizing: "border-box" as const,
               }}
             />
           </div>
-          <button onClick={go} style={{
+          <button type="submit" style={{
             padding: "14px 24px", background: GOLD, color: NAVY,
-            fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 700,
-            border: "none", cursor: "pointer", whiteSpace: "nowrap",
+            fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase" as const, fontWeight: 700,
+            border: "none", cursor: "pointer", whiteSpace: "nowrap" as const,
           }}>
             検索
           </button>
-        </div>
+        </form>
 
         {/* Trending words */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>

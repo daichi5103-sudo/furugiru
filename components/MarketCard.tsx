@@ -1,72 +1,70 @@
 "use client";
 import { Market } from "@/lib/markets";
 
+const GOLD  = "#B8974A";
+const CREAM = "#F5F0E8";
+const MUTED = "#5A6E85";
+
 interface MarketCardProps {
   market: Market;
   keyword: string;
   index: number;
 }
 
-export default function MarketCard({ market, keyword, index }: MarketCardProps) {
-  const delays = ["animate-fade-up", "animate-fade-up-delay-1", "animate-fade-up-delay-2"];
-
+export default function MarketCard({ market, keyword }: MarketCardProps) {
   return (
     <a
       href={market.searchUrl(keyword)}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group flex flex-col gap-4 p-6 border-2 border-ink-DEFAULT bg-cream-50
-        shadow-[4px_4px_0_#1C1509]
-        hover:shadow-[7px_7px_0_#1C1509] hover:-translate-x-0.5 hover:-translate-y-0.5
-        transition-all duration-200 ${delays[index] ?? ""}`}
+      style={{
+        display: "flex", flexDirection: "column", gap: 16, padding: 24,
+        border: "1px solid rgba(184,151,74,.2)", background: "rgba(255,255,255,.03)",
+        textDecoration: "none", transition: "border-color .2s",
+        fontFamily: "'Helvetica Neue', sans-serif",
+      }}
+      onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(184,151,74,.5)")}
+      onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(184,151,74,.2)")}
     >
       {/* Top row */}
-      <div className="flex items-start justify-between">
-        <div
-          className="w-11 h-11 flex items-center justify-center border-2 border-ink-DEFAULT text-xl font-display font-black"
-          style={{ background: market.bgColor, color: market.accentColor }}
-        >
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+        <div style={{
+          width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center",
+          border: "1px solid rgba(184,151,74,.25)", fontSize: 16, fontWeight: 700,
+          background: market.bgColor, color: market.accentColor,
+          fontFamily: "Georgia, serif",
+        }}>
           {market.shortName}
         </div>
-        <span className="font-mono text-[10px] tracking-widest text-ink-faint uppercase">
+        <span style={{ fontSize: 9, letterSpacing: "0.15em", textTransform: "uppercase", color: MUTED }}>
           外部リンク ↗
         </span>
       </div>
 
       {/* Market name */}
       <div>
-        <h3 className="font-display text-2xl font-bold text-ink-DEFAULT leading-none mb-1">
+        <h3 style={{ fontSize: 20, fontWeight: 300, color: CREAM, fontFamily: "Georgia, serif", lineHeight: 1, marginBottom: 4 }}>
           {market.name}
         </h3>
-        <p className="font-body text-sm text-ink-muted">{market.tagline}</p>
+        <p style={{ fontSize: 12, color: MUTED }}>{market.tagline}</p>
       </div>
 
       {/* Query preview */}
-      <div className="mt-auto border-t border-ink-DEFAULT/10 pt-4">
-        <p className="font-mono text-xs text-ink-muted mb-2">検索ワード</p>
-        <p className="font-body text-sm font-medium text-ink-DEFAULT truncate">
+      <div style={{ borderTop: "1px solid rgba(184,151,74,.1)", paddingTop: 16, marginTop: "auto" }}>
+        <p style={{ fontSize: 10, letterSpacing: "0.08em", color: MUTED, marginBottom: 6 }}>検索ワード</p>
+        <p style={{ fontSize: 13, color: "rgba(245,240,232,.8)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
           &ldquo;{keyword}&rdquo;
         </p>
       </div>
 
       {/* CTA */}
-      <div
-        className="text-center py-2.5 text-sm font-display font-bold tracking-wider uppercase border-2 border-ink-DEFAULT
-          group-hover:text-cream-50 transition-colors"
-        style={{
-          backgroundColor: "transparent",
-          color: market.accentColor,
-        }}
-      >
-        <span
-          className="block group-hover:opacity-0 transition-opacity"
-          style={{ color: market.accentColor }}
-        >
-          {market.name}で探す
-        </span>
-        <span className="block absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          開く ↗
-        </span>
+      <div style={{
+        textAlign: "center", padding: "10px 0",
+        border: `1px solid rgba(184,151,74,.25)`,
+        fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase",
+        fontWeight: 700, color: GOLD,
+      }}>
+        {market.name}で探す
       </div>
     </a>
   );

@@ -3,6 +3,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { BRANDS, Brand } from "@/lib/brands";
 
+const GOLD  = "#B8974A";
+const CREAM = "#F5F0E8";
+const MUTED = "#5A6E85";
+
 const CATEGORIES = [
   { id: "all", label: "すべて" },
   { id: "fashion", label: "ファッション・古着" },
@@ -19,21 +23,24 @@ export default function BrandsClient() {
   return (
     <>
       {/* Category filter tabs */}
-      <div className="flex flex-wrap gap-2 mb-10">
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 40 }}>
         {CATEGORIES.map((cat) => {
           const isActive = active === cat.id;
           return (
             <button
               key={cat.id}
               onClick={() => setActive(cat.id)}
-              className={`px-4 py-2 border-2 font-body text-sm transition-all
-                ${isActive
-                  ? "border-ink-DEFAULT bg-ink-DEFAULT text-cream-100 shadow-[3px_3px_0_#B84A1E]"
-                  : "border-ink-DEFAULT/30 text-ink-muted hover:border-ink-DEFAULT hover:text-ink-DEFAULT"
-                }`}
+              style={{
+                padding: "8px 16px",
+                border: isActive ? `1px solid ${GOLD}` : "1px solid rgba(184,151,74,.25)",
+                background: isActive ? "rgba(184,151,74,.15)" : "rgba(255,255,255,.03)",
+                color: isActive ? CREAM : MUTED,
+                fontSize: 12, cursor: "pointer", letterSpacing: "0.04em",
+                fontFamily: "'Helvetica Neue', sans-serif",
+              }}
             >
               {cat.label}
-              <span className={`ml-2 font-mono text-xs ${isActive ? "text-cream-200" : "text-ink-faint"}`}>
+              <span style={{ marginLeft: 8, fontSize: 10, color: isActive ? "rgba(245,240,232,.6)" : "rgba(90,110,133,.7)" }}>
                 {cat.id === "all" ? BRANDS.length : BRANDS.filter((b) => b.category === cat.id).length}
               </span>
             </button>
@@ -43,66 +50,78 @@ export default function BrandsClient() {
 
       {/* Brand grid */}
       {filtered.length === 0 ? (
-        <div className="border-2 border-dashed border-ink-DEFAULT/20 py-16 text-center">
-          <p className="font-mono text-xs text-ink-faint tracking-widest uppercase mb-2">Coming Soon</p>
-          <p className="font-body text-sm text-ink-muted">このカテゴリは準備中です</p>
+        <div style={{
+          border: "1px dashed rgba(184,151,74,.2)", padding: "64px 24px",
+          textAlign: "center",
+        }}>
+          <p style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: MUTED, marginBottom: 8 }}>Coming Soon</p>
+          <p style={{ fontSize: 13, color: "rgba(245,240,232,.5)" }}>このカテゴリは準備中です</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {filtered.map((brand, i) => (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 20 }}>
+          {filtered.map((brand) => (
             <Link
               key={brand.slug}
               href={`/brands/${brand.slug}`}
-              className="group border-2 border-ink-DEFAULT bg-cream-50 p-6
-                shadow-[4px_4px_0_#1C1509]
-                hover:shadow-[7px_7px_0_#1C1509] hover:-translate-x-0.5 hover:-translate-y-0.5
-                transition-all duration-200"
+              style={{
+                border: "1px solid rgba(184,151,74,.2)",
+                background: "rgba(255,255,255,.03)",
+                padding: 24, textDecoration: "none", display: "block",
+                transition: "border-color .2s",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(184,151,74,.5)")}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(184,151,74,.2)")}
             >
-              <div className="w-full h-1.5 mb-5" style={{ backgroundColor: brand.color }} />
+              <div style={{ width: "100%", height: 2, background: brand.color, marginBottom: 20 }} />
 
-              <div className="flex items-start justify-between mb-3">
+              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 12 }}>
                 <div>
-                  <h2 className="font-display text-2xl font-black text-ink-DEFAULT leading-none mb-1">
+                  <h2 style={{ fontSize: 22, fontWeight: 300, color: CREAM, fontFamily: "Georgia, serif", lineHeight: 1, marginBottom: 4 }}>
                     {brand.name}
                   </h2>
-                  <p className="font-mono text-xs text-ink-faint tracking-widest">
+                  <p style={{ fontSize: 10, letterSpacing: "0.1em", color: MUTED }}>
                     {brand.country} / {brand.founded}創業
                   </p>
                 </div>
-                <div className="flex flex-col items-end gap-1.5">
-                  <span className="font-mono text-[10px] tracking-widest text-ink-faint border border-ink-DEFAULT/20 px-2 py-1 uppercase">
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
+                  <span style={{
+                    fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase",
+                    padding: "3px 8px", border: "1px solid rgba(184,151,74,.25)", color: MUTED,
+                  }}>
                     {brand.tagEras.length}時代
                   </span>
-                  <span
-                    className="font-mono text-[10px] px-2 py-0.5 uppercase tracking-widest"
-                    style={{
-                      background: brand.category === "fashion" ? "#EAF0FF" : brand.category === "cosmetics" ? "#FFF0F5" : "#F0F7EA",
-                      color: brand.category === "fashion" ? "#1A3A8F" : brand.category === "cosmetics" ? "#8F1A4A" : "#2A5C1A",
-                    }}
-                  >
+                  <span style={{
+                    fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase",
+                    padding: "3px 8px",
+                    background: "rgba(184,151,74,.1)",
+                    color: GOLD,
+                  }}>
                     {CATEGORIES.find((c) => c.id === brand.category)?.label}
                   </span>
                 </div>
               </div>
 
-              <p className="font-body text-sm text-ink-muted leading-relaxed mb-5 line-clamp-2">
+              <p style={{ fontSize: 13, color: "rgba(245,240,232,.6)", lineHeight: 1.7, marginBottom: 20, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
                 {brand.description}
               </p>
 
-              <div className="flex flex-wrap gap-2 mb-5">
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 20 }}>
                 {brand.tagEras.map((era) => (
                   <span
                     key={era.era}
-                    className="font-mono text-[10px] px-2 py-0.5 border border-ink-DEFAULT/20 text-ink-muted"
+                    style={{
+                      fontSize: 9, letterSpacing: "0.08em", padding: "3px 8px",
+                      border: "1px solid rgba(184,151,74,.2)", color: MUTED,
+                    }}
                   >
                     {era.era}
                   </span>
                 ))}
               </div>
 
-              <div className="flex items-center justify-between border-t border-ink-DEFAULT/10 pt-4">
-                <span className="font-body text-sm text-ink-muted">タグ図鑑・偽物判別を見る</span>
-                <span className="font-mono text-xs text-rust group-hover:translate-x-1 transition-transform inline-block">→</span>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid rgba(184,151,74,.1)", paddingTop: 16 }}>
+                <span style={{ fontSize: 12, color: MUTED }}>タグ図鑑・偽物判別を見る</span>
+                <span style={{ fontSize: 12, color: GOLD, fontFamily: "Georgia, serif" }}>→</span>
               </div>
             </Link>
           ))}
@@ -110,9 +129,11 @@ export default function BrandsClient() {
       )}
 
       {/* Coming soon */}
-      <div className="mt-6 border-2 border-dashed border-ink-DEFAULT/20 p-6 text-center">
-        <p className="font-mono text-xs text-ink-faint tracking-widest uppercase mb-2">Coming Soon</p>
-        <p className="font-body text-sm text-ink-muted">
+      <div style={{
+        marginTop: 24, border: "1px dashed rgba(184,151,74,.2)", padding: 24, textAlign: "center",
+      }}>
+        <p style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: MUTED, marginBottom: 8 }}>Coming Soon</p>
+        <p style={{ fontSize: 13, color: "rgba(245,240,232,.5)" }}>
           コスメ：CHANEL・MAC・NARS / アクセサリー：Tiffany・Cartier 等を順次追加予定
         </p>
       </div>
