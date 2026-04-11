@@ -273,7 +273,7 @@ export const STAIN_DATA: StainType[] = [
       { name: "ワイドハイターEXパワー", price: "400〜800円", priceLevel: 2, where: "スーパー・ドラッグストア", howTo: "お湯に溶かして1〜6時間つけ置き後、通常洗濯", rakutenQuery: "ワイドハイター EXパワー 衣類用漂白剤" },
       { name: "オキシクリーン", price: "1,000〜2,500円", priceLevel: 2, where: "コストコ・Amazon・ホームセンター", howTo: "40〜60℃のお湯に溶かして1〜6時間つけ置き", rakutenQuery: "オキシクリーン 洗濯 つけ置き" },
       { name: "ウタマロ石けん", price: "200〜300円", priceLevel: 1, where: "スーパー・ドラッグストア", howTo: "黄ばみ部分に石けんをこすりつけて数分置き、洗濯する", rakutenQuery: "ウタマロ石けん 洗濯用" },
-      { name: "黄ばみ専用クリーナー（ヤケ・黄変除去剤）", price: "3,000〜8,000円", praceLevel: 3, where: "クリーニング用品専門店・Amazon", howTo: "古い黄変専用の処理剤。希釈してつけ置き後洗い流す", rakutenQuery: "黄変除去剤 衣類 古い シミ取り" },
+      { name: "黄ばみ専用クリーナー（ヤケ・黄変除去剤）", price: "3,000〜8,000円", priceLevel: 3, where: "クリーニング用品専門店・Amazon", howTo: "古い黄変専用の処理剤。希釈してつけ置き後洗い流す", rakutenQuery: "黄変除去剤 衣類 古い シミ取り" },
     ],
     warnings: [
       "黄ばみが残った状態での乾燥機使用（定着する）",
