@@ -119,13 +119,10 @@ export default function HomePage() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 12 }}>
           {FEATURES.map(({ label, sub, href, color }) => (
             <Link key={href} href={href} style={{
-              border: `1px solid rgba(184,151,74,.15)`,
+              border: `1px solid rgba(184,151,74,.2)`,
               background: "rgba(255,255,255,.02)",
               padding: "20px", textDecoration: "none", display: "block",
-              transition: "border-color .2s",
-            }}
-              onMouseEnter={e => (e.currentTarget.style.borderColor = `rgba(184,151,74,.5)`)}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = `rgba(184,151,74,.15)`)}>
+            }}>
               <div style={{ width: "100%", height: 2, background: color, marginBottom: 14 }} />
               <p style={{ fontSize: 16, color: CREAM, fontFamily: "Georgia, serif", fontWeight: 300, marginBottom: 4 }}>
                 {label}

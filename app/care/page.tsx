@@ -13,9 +13,18 @@ export const metadata = {
   ],
 };
 
+const NAV_LINKS = [
+  { label: "タグ図鑑",     href: "/brands" },
+  { label: "お手入れ",     href: "/care" },
+  { label: "シミ取り",     href: "/care/stain" },
+  { label: "古着屋を探す", href: "/shops" },
+  { label: "コラボ",       href: "/collabs" },
+  { label: "トレンド",     href: "/trend" },
+];
+
 export default function CarePage() {
   return (
-    <div className="min-h-screen" style={{ background: "#0E1B2E" }}>
+    <div style={{ background: "#0E1B2E", minHeight: "100vh", fontFamily: "'Helvetica Neue', sans-serif" }}>
       {/* Header */}
       <header
         style={{
@@ -25,26 +34,27 @@ export default function CarePage() {
           alignItems: "center",
           justifyContent: "space-between",
           background: "#0E1B2E",
+          position: "sticky", top: 0, zIndex: 50,
         }}
       >
         <Link
           href="/"
           style={{
-            fontSize: 17,
+            fontSize: 18,
             letterSpacing: "0.2em",
             color: "#F5F0E8",
             textDecoration: "none",
+            fontFamily: "Georgia, serif",
           }}
         >
           FURU<span style={{ color: "#B8974A" }}>GIRU</span>
         </Link>
-        <nav style={{ display: "flex", gap: 24 }}>
-          <Link href="/brands" style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5A6E85", textDecoration: "none" }}>
-            タグ図鑑
-          </Link>
-          <Link href="/care/stain" style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5A6E85", textDecoration: "none" }}>
-            シミ落とし
-          </Link>
+        <nav style={{ display: "flex", gap: 20, flexWrap: "wrap", justifyContent: "flex-end" }}>
+          {NAV_LINKS.map(({ label, href }) => (
+            <Link key={href} href={href} style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5A6E85", textDecoration: "none" }}>
+              {label}
+            </Link>
+          ))}
         </nav>
       </header>
 

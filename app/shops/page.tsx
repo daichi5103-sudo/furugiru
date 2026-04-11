@@ -24,11 +24,12 @@ export default function ShopsPage() {
         </Link>
         <nav style={{ display: "flex", gap: 20, flexWrap: "wrap", justifyContent: "flex-end" }}>
           {[
-            { label: "タグ図鑑",  href: "/brands" },
-            { label: "お手入れ",  href: "/care" },
-            { label: "シミ取り",  href: "/care/stain" },
-            { label: "コラボ",    href: "/collabs" },
-            { label: "トレンド",  href: "/trend" },
+            { label: "タグ図鑑",     href: "/brands" },
+            { label: "お手入れ",     href: "/care" },
+            { label: "シミ取り",     href: "/care/stain" },
+            { label: "古着屋を探す", href: "/shops" },
+            { label: "コラボ",       href: "/collabs" },
+            { label: "トレンド",     href: "/trend" },
           ].map(({ label, href }) => (
             <Link key={href} href={href} style={{
               fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase",
