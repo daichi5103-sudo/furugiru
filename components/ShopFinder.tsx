@@ -147,7 +147,7 @@ export default function ShopFinder() {
     const key = query[0];
     const base  = (SUGGEST_MAP[key] || []).filter(s => s.startsWith(query) && s !== query);
     const extra = Object.values(SUGGEST_MAP).flat().filter(s => s.includes(query) && !base.includes(s) && s !== query);
-    setSuggests([...new Set([...base, ...extra])].slice(0, 6));
+    setSuggests(Array.from(new Set([...base, ...extra])).slice(0, 6));
   }, [query]);
 
   const doSearch = async (term: string) => {
