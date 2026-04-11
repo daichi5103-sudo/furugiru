@@ -151,7 +151,6 @@ export default function StainClient({ stains }: { stains: StainType[] }) {
           <button key={s.id} onClick={() => setActiveSection(s.id)} style={{
             padding: "9px 16px", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase",
             color: activeSection === s.id ? GOLD : MUTED,
-            borderBottom: `2px solid ${activeSection === s.id ? GOLD : "transparent"}`,
             marginBottom: -1, background: "none", border: "none",
             borderBottom: `2px solid ${activeSection === s.id ? GOLD : "transparent"}`,
             cursor: "pointer", fontFamily: "'Helvetica Neue', sans-serif", transition: "color .15s", whiteSpace: "nowrap",
