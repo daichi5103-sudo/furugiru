@@ -3,13 +3,21 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { RakutenItem } from "@/lib/rakuten";
 
+const GOLD  = "#B8974A";
+const CREAM = "#F5F0E8";
+const MUTED = "#5A6E85";
+
 function Skeleton() {
   return (
-    <div className="border-2 border-ink-DEFAULT/20 p-4 bg-cream-50">
-      <div className="skeleton w-full h-28 mb-3" />
-      <div className="skeleton h-3.5 w-full mb-2 rounded-sm" />
-      <div className="skeleton h-3.5 w-2/3 mb-4 rounded-sm" />
-      <div className="skeleton h-5 w-1/3 rounded-sm" />
+    <div style={{
+      border: "1px solid rgba(184,151,74,.2)",
+      background: "rgba(255,255,255,.03)",
+      padding: 16,
+    }}>
+      <div style={{ width: "100%", height: 112, background: "rgba(255,255,255,.05)", marginBottom: 12, animation: "pulse 2s infinite" }} />
+      <div style={{ height: 12, width: "100%", background: "rgba(255,255,255,.05)", marginBottom: 8, borderRadius: 2 }} />
+      <div style={{ height: 12, width: "60%", background: "rgba(255,255,255,.05)", marginBottom: 16, borderRadius: 2 }} />
+      <div style={{ height: 20, width: "40%", background: "rgba(255,255,255,.05)", borderRadius: 2 }} />
     </div>
   );
 }
@@ -34,20 +42,25 @@ export default function RakutenSection({ keyword }: { keyword: string }) {
 
   return (
     <section>
-      <div className="flex items-baseline gap-3 mb-5">
-        <h2 className="font-display text-2xl font-bold text-ink-DEFAULT">楽天市場 — 新品価格</h2>
-        <span className="font-mono text-[10px] tracking-widest text-ink-faint uppercase border border-ink-faint/40 px-2 py-0.5">
+      <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 20 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 300, color: CREAM, fontFamily: "Georgia, serif" }}>
+          楽天市場 — 新品価格
+        </h2>
+        <span style={{
+          fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase",
+          padding: "2px 8px", border: "1px solid rgba(184,151,74,.25)", color: MUTED,
+        }}>
           定価参考
         </span>
       </div>
 
       {error && (
-        <p className="font-body text-sm text-ink-muted py-6 text-center border border-dashed border-ink-DEFAULT/20">
+        <p style={{ fontSize: 13, color: MUTED, padding: "24px 0", textAlign: "center", border: "1px dashed rgba(184,151,74,.2)" }}>
           {error}
         </p>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 16 }}>
         {loading
           ? Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} />)
           : items.map((item, i) => (
@@ -56,35 +69,43 @@ export default function RakutenSection({ keyword }: { keyword: string }) {
                 href={item.itemUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group border-2 border-ink-DEFAULT/20 hover:border-ink-DEFAULT bg-cream-50 p-4
-                  hover:shadow-[4px_4px_0_#1C1509] transition-all duration-200 flex flex-col"
+                style={{
+                  border: "1px solid rgba(184,151,74,.2)",
+                  background: "rgba(255,255,255,.03)",
+                  padding: 16, textDecoration: "none",
+                  display: "flex", flexDirection: "column",
+                  fontFamily: "'Helvetica Neue', sans-serif",
+                }}
               >
                 {item.mediumImageUrls?.[0]?.imageUrl ? (
-                  <div className="relative w-full h-28 mb-3 bg-cream-200 overflow-hidden">
+                  <div style={{ position: "relative", width: "100%", height: 112, marginBottom: 12, background: "rgba(255,255,255,.05)", overflow: "hidden" }}>
                     <Image
                       src={item.mediumImageUrls[0].imageUrl}
                       alt={item.itemName}
                       fill
-                      className="object-contain"
+                      style={{ objectFit: "contain" }}
                     />
                   </div>
                 ) : (
-                  <div className="w-full h-28 mb-3 bg-cream-200 flex items-center justify-center">
-                    <span className="font-display text-2xl text-ink-faint">楽</span>
+                  <div style={{ width: "100%", height: 112, marginBottom: 12, background: "rgba(255,255,255,.05)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <span style={{ fontFamily: "Georgia, serif", fontSize: 28, color: "rgba(184,151,74,.3)" }}>楽</span>
                   </div>
                 )}
 
-                <p className="font-body text-sm text-ink-light line-clamp-2 mb-1 flex-1 leading-snug">
+                <p style={{ fontSize: 12, color: "rgba(245,240,232,.7)", lineHeight: 1.5, marginBottom: 6, flex: 1,
+                  overflow: "hidden", maxHeight: "3em" }}>
                   {item.itemName}
                 </p>
-                <p className="font-mono text-[10px] text-ink-faint mb-3 truncate">{item.shopName}</p>
+                <p style={{ fontSize: 10, color: MUTED, marginBottom: 12, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {item.shopName}
+                </p>
 
-                <div className="flex items-baseline justify-between">
-                  <span className="font-display text-xl font-bold text-rust">
+                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
+                  <span style={{ fontFamily: "Georgia, serif", fontSize: 20, fontWeight: 700, color: GOLD }}>
                     ¥{item.itemPrice.toLocaleString()}
                   </span>
                   {item.reviewCount > 0 && (
-                    <span className="font-mono text-[10px] text-ink-faint">
+                    <span style={{ fontSize: 10, color: MUTED }}>
                       ★{item.reviewAverage.toFixed(1)} ({item.reviewCount})
                     </span>
                   )}
@@ -93,12 +114,12 @@ export default function RakutenSection({ keyword }: { keyword: string }) {
             ))}
       </div>
 
-      <div className="mt-4 text-right">
+      <div style={{ marginTop: 16, textAlign: "right" }}>
         <a
           href={`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(keyword)}/`}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-mono text-xs text-ink-muted hover:text-rust underline underline-offset-4 tracking-wide"
+          style={{ fontSize: 11, color: MUTED, textDecoration: "underline", letterSpacing: "0.06em" }}
         >
           楽天市場でもっと見る →
         </a>
