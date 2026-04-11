@@ -1,20 +1,23 @@
 "use client";
-import { Market } from "@/lib/markets";
 
 const GOLD  = "#B8974A";
 const CREAM = "#F5F0E8";
 const MUTED = "#5A6E85";
 
 interface MarketCardProps {
-  market: Market;
+  name: string;
+  shortName: string;
+  tagline: string;
+  accentColor: string;
+  bgColor: string;
+  searchUrl: string;
   keyword: string;
-  index: number;
 }
 
-export default function MarketCard({ market, keyword }: MarketCardProps) {
+export default function MarketCard({ name, shortName, tagline, accentColor, bgColor, searchUrl, keyword }: MarketCardProps) {
   return (
     <a
-      href={market.searchUrl(keyword)}
+      href={searchUrl}
       target="_blank"
       rel="noopener noreferrer"
       style={{
@@ -31,10 +34,10 @@ export default function MarketCard({ market, keyword }: MarketCardProps) {
         <div style={{
           width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center",
           border: "1px solid rgba(184,151,74,.25)", fontSize: 16, fontWeight: 700,
-          background: market.bgColor, color: market.accentColor,
+          background: bgColor, color: accentColor,
           fontFamily: "Georgia, serif",
         }}>
-          {market.shortName}
+          {shortName}
         </div>
         <span style={{ fontSize: 9, letterSpacing: "0.15em", textTransform: "uppercase", color: MUTED }}>
           外部リンク ↗
@@ -44,9 +47,9 @@ export default function MarketCard({ market, keyword }: MarketCardProps) {
       {/* Market name */}
       <div>
         <h3 style={{ fontSize: 20, fontWeight: 300, color: CREAM, fontFamily: "Georgia, serif", lineHeight: 1, marginBottom: 4 }}>
-          {market.name}
+          {name}
         </h3>
-        <p style={{ fontSize: 12, color: MUTED }}>{market.tagline}</p>
+        <p style={{ fontSize: 12, color: MUTED }}>{tagline}</p>
       </div>
 
       {/* Query preview */}
@@ -64,7 +67,7 @@ export default function MarketCard({ market, keyword }: MarketCardProps) {
         fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase",
         fontWeight: 700, color: GOLD,
       }}>
-        {market.name}で探す
+        {name}で探す
       </div>
     </a>
   );

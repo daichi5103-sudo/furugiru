@@ -106,8 +106,17 @@ export default function SearchPage({ searchParams }: Props) {
             </span>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 16 }}>
-            {MARKETS.map((market, i) => (
-              <MarketCard key={market.id} market={market} keyword={keyword} index={i} />
+            {MARKETS.map((market) => (
+              <MarketCard
+                key={market.id}
+                name={market.name}
+                shortName={market.shortName}
+                tagline={market.tagline}
+                accentColor={market.accentColor}
+                bgColor={market.bgColor}
+                searchUrl={market.searchUrl(keyword)}
+                keyword={keyword}
+              />
             ))}
           </div>
         </section>
