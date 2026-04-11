@@ -5,12 +5,12 @@ import RakutenSection from "@/components/RakutenSection";
 import AdSense from "@/components/AdSense";
 import { MARKETS } from "@/lib/markets";
 
-interface Props {
-  searchParams: { q?: string };
-}
+type Props = {
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 export function generateMetadata({ searchParams }: Props) {
-  const q = searchParams.q || "";
+  const q = (searchParams.q as string) || "";
   return {
     title: q ? `「${q}」の古着検索 | FURUGIRU` : "検索 | FURUGIRU",
     description: `「${q}」の古着をメルカリ・ラクマ・ヤフオクで一括比較。楽天市場の新品価格も確認。`,
@@ -32,7 +32,7 @@ const NAV_LINKS = [
 ];
 
 export default function SearchPage({ searchParams }: Props) {
-  const keyword = (searchParams.q || "").trim();
+  const keyword = ((searchParams.q as string) || "").trim();
 
   if (!keyword) {
     return (

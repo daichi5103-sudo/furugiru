@@ -101,7 +101,7 @@ export default function BrandsClient() {
                 </div>
               </div>
 
-              <p style={{ fontSize: 13, color: "rgba(245,240,232,.6)", lineHeight: 1.7, marginBottom: 20, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+              <p style={{ fontSize: 13, color: "rgba(245,240,232,.6)", lineHeight: 1.7, marginBottom: 20, overflow: "hidden", maxHeight: "3.4em" }}>
                 {brand.description}
               </p>
 
