@@ -26,7 +26,7 @@ export const MARKETS: Market[] = [
     tagline: "楽天グループ公式フリマ",
     accentColor: "#009AB5",
     bgColor: "#E8F7FB",
-    searchUrl: (q) => `https://fril.jp/search?query=${encodeURIComponent(q)}`,
+    searchUrl: (q) => `https://fril.jp/s?search%5Bkeyword%5D=${encodeURIComponent(q)}`,
   },
   {
     id: "yahoo",
