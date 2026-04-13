@@ -20,6 +20,7 @@ const NAV_LINKS = [
   { label: "古着屋を探す", href: "/shops" },
   { label: "コラボ",       href: "/collabs" },
   { label: "トレンド",     href: "/trend" },
+  { label: "カレンダー",   href: "/calendar" },
 ];
 
 export default function CarePage() {

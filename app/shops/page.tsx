@@ -30,6 +30,7 @@ export default function ShopsPage() {
             { label: "古着屋を探す", href: "/shops" },
             { label: "コラボ",       href: "/collabs" },
             { label: "トレンド",     href: "/trend" },
+            { label: "カレンダー",   href: "/calendar" },
           ].map(({ label, href }) => (
             <Link key={href} href={href} style={{
               fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase",

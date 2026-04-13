@@ -9,7 +9,8 @@ export interface RakutenItem {
 }
 
 export async function searchRakuten(keyword: string): Promise<RakutenItem[]> {
-  const appId = process.env.RAKUTEN_APP_ID;
+  const appId     = process.env.RAKUTEN_APP_ID;
+  const affiliateId = "528d5728.aa249695.528d5729.f2729a2d";
 
   if (!appId || appId === "your_rakuten_app_id_here") {
     return mockData(keyword);
@@ -17,6 +18,7 @@ export async function searchRakuten(keyword: string): Promise<RakutenItem[]> {
 
   const params = new URLSearchParams({
     applicationId: appId,
+    affiliateId,
     keyword,
     hits: "6",
     sort: "-reviewCount",
