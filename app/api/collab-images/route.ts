@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({});
   }
 
-  const kwList = keywords.split(",").slice(0, 12); // 最大12件
+  const kwList = keywords.split(",").slice(0, 20); // 最大20件
 
   const results = await Promise.allSettled(
     kwList.map(async (kw) => {
