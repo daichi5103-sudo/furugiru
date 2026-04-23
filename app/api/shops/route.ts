@@ -11,6 +11,7 @@ export interface PlaceResult {
   googleMapUrl: string;
   openNow: boolean | null;
   photos: string[];   // Photo reference URLs（最大2枚）
+  recommended: boolean; // 評価4.3以上かつ口コミ50件以上
   reviews: {
     text: string;
     rating: number;
@@ -45,13 +46,12 @@ async function fetchFromGooglePlaces(query: string): Promise<PlaceResult[]> {
   if (!apiKey) throw new Error("GOOGLE_PLACES_API_KEY が設定されていません");
 
   // Step 1: Text Search でplace_idと基本情報を取得
-  const searchQuery = `${query} 古着屋`;
+  const searchQuery = `${query} 古着屋 ヴィンテージ`;
   const textSearchUrl = new URL(
     "https://maps.googleapis.com/maps/api/place/textsearch/json"
   );
   textSearchUrl.searchParams.set("query", searchQuery);
   textSearchUrl.searchParams.set("language", "ja");
-  textSearchUrl.searchParams.set("type", "clothing_store");
   textSearchUrl.searchParams.set("key", apiKey);
 
   const searchRes = await fetch(textSearchUrl.toString(), {
@@ -70,8 +70,13 @@ async function fetchFromGooglePlaces(query: string): Promise<PlaceResult[]> {
 
   if (!searchData.results?.length) return [];
 
-  // Step 2: 上位5件のPlace Detailsを並列取得（reviewsを含む）
-  const top5 = searchData.results.slice(0, 5);
+  // 評価3.0未満を除外し、評価の高い順にソートして上位8件を詳細取得
+  const filtered = (searchData.results as any[])
+    .filter((p: any) => (p.rating ?? 0) >= 3.0)
+    .sort((a: any, b: any) => (b.rating ?? 0) - (a.rating ?? 0));
+
+  // Step 2: 上位8件のPlace Detailsを並列取得（reviewsを含む）
+  const top5 = filtered.slice(0, 8);
 
   const detailPromises = top5.map(async (place: any) => {
     const detailUrl = new URL(
@@ -111,12 +116,15 @@ async function fetchFromGooglePlaces(query: string): Promise<PlaceResult[]> {
         `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${p.photo_reference}&key=${apiKey}`
     );
 
+    const rating = r.rating ?? null;
+    const reviewCount = r.user_ratings_total ?? null;
+
     return {
       placeId: r.place_id,
       name: r.name,
       address: r.formatted_address || "",
-      rating: r.rating ?? null,
-      reviewCount: r.user_ratings_total ?? null,
+      rating,
+      reviewCount,
       location: {
         lat: r.geometry?.location?.lat ?? 0,
         lng: r.geometry?.location?.lng ?? 0,
@@ -124,6 +132,7 @@ async function fetchFromGooglePlaces(query: string): Promise<PlaceResult[]> {
       googleMapUrl: r.url || `https://maps.google.com/?place_id=${r.place_id}`,
       openNow: r.opening_hours?.open_now ?? null,
       photos,
+      recommended: (rating ?? 0) >= 4.3 && (reviewCount ?? 0) >= 50,
       reviews: allReviews,
     } as PlaceResult;
   });
@@ -198,6 +207,7 @@ function getMockData(area: string): PlaceResult[] {
       googleMapUrl: `https://maps.google.com/?q=${encodeURIComponent(area + " 古着屋")}`,
       openNow: null,
       photos: [],
+      recommended: false,
       reviews: [
         { text: "品揃えが豊富で値段も手頃。週末は混雑するので平日がおすすめ。", rating: 4, authorName: "サンプルユーザー", time: Date.now() / 1000 },
         { text: "スタッフが親切で初心者でも相談しやすい雰囲気。", rating: 5, authorName: "サンプルユーザー2", time: Date.now() / 1000 },

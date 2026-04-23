@@ -59,6 +59,9 @@ function ShopCard({ shop }: { shop: PlaceResult }) {
         <div>
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <h4 className="text-base font-serif font-light text-[#F5F0E8]">{shop.name}</h4>
+            {shop.recommended && (
+              <span className="text-[9px] tracking-widest text-[#B8974A] border border-[rgba(184,151,74,0.5)] bg-[rgba(184,151,74,0.08)] px-1.5 py-0.5 uppercase font-sans font-bold">★ おすすめ</span>
+            )}
             {shop.openNow === true && (
               <span className="text-[9px] tracking-widest text-emerald-400 border border-emerald-600/40 px-1.5 py-0.5 uppercase font-sans">営業中</span>
             )}
@@ -161,7 +164,12 @@ export default function ShopFinder() {
     try {
       const res  = await fetch(`/api/shops?area=${encodeURIComponent(q)}`);
       const data = await res.json();
-      setShops(data.shops || []);
+      // おすすめ優先・評価順でソート
+      const sorted = (data.shops || []).sort((a: PlaceResult, b: PlaceResult) => {
+        if (a.recommended !== b.recommended) return a.recommended ? -1 : 1;
+        return (b.rating ?? 0) - (a.rating ?? 0);
+      });
+      setShops(sorted);
       setIsMock(data.isMock || false);
     } catch {
       setShops([]);
