@@ -20,7 +20,8 @@ const SUPABASE_ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export const isSupabaseConfigured =
   !!SUPABASE_URL && !!SUPABASE_ANON &&
-  SUPABASE_URL !== "your_supabase_url_here";
+  SUPABASE_URL !== "your_supabase_url_here" &&
+  SUPABASE_ANON !== "your_supabase_anon_key_here";
 
 export async function fetchLotteryEvents(): Promise<LotteryEvent[]> {
   if (!isSupabaseConfigured) return mockEvents();

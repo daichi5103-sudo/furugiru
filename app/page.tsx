@@ -12,6 +12,8 @@ const NAV_LINKS = [
   { label: "シミ取り",     href: "/care/stain" },
   { label: "古着屋を探す", href: "/shops" },
   { label: "コラボ",       href: "/collabs" },
+  { label: "鑑定クイズ",   href: "/quiz" },
+  { label: "欲しいリスト", href: "/wishlist" },
   { label: "トレンド",     href: "/trend" },
   { label: "カレンダー",   href: "/calendar" },
 ];
@@ -23,6 +25,8 @@ const FEATURES = [
   { label: "シミ取り",     sub: "種類別 緊急対処法",              href: "/care/stain",          color: "#DC2626" },
   { label: "古着屋を探す", sub: "全国エリア別・口コミ付き",       href: "/shops",               color: GOLD      },
   { label: "コラボ相場",   sub: "Nike×Supreme など定価比較",      href: "/collabs",             color: "#7C3AED" },
+  { label: "鑑定クイズ",   sub: "全10問で本物を見抜け",            href: "/quiz",                color: "#E84033" },
+  { label: "欲しいリスト", sub: "コラボを保存して相場管理",        href: "/wishlist",            color: "#3A8A5A" },
   { label: "トレンド",     sub: "X & フリマ売れ筋リアルタイム",   href: "/trend",               color: "#B84A1E" },
 ];
 

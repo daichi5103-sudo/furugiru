@@ -1,8 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import WishlistButton from "./WishlistButton";
+import PriceChart from "./PriceChart";
+import { generatePriceHistory, getBuyIndex } from "@/lib/priceHistory";
 
-interface Collab {
+export interface Collab {
   id: number;
   brands: string;
   brandTags: string[];
@@ -38,7 +41,7 @@ const FALLBACK_IMG = "https://images.unsplash.com/photo-1489987707025-afc232f7ea
 const pickImg = (direct: string, rakuten: string | null | undefined, cat: string) =>
   direct || rakuten || DEFAULT_IMG[cat] || FALLBACK_IMG;
 
-const COLLABS: Collab[] = [
+export const COLLABS: Collab[] = [
   // ── Nike ──
   { id:1,  brands:"Nike × Supreme",          brandTags:["Nike","Supreme"],               name:"Air Force 1 Low Supreme",          year:2012, cat:"スニーカー", orig:15000,  market:85000,  rarity:"rare",      icon:"AF1",  isNew:false, desc:"SupremeのBox LogoとNike AF1の伝説的コラボ。赤・黒・白の3カラーが存在。",                              points:["Side Swooshがレザー製","Box Logo刺繍が高密度","靴底にSupremeロゴ"],                   searchKeyword:"ナイキ エアフォース1 スニーカー メンズ",        imageUrl:"https://sneakerbardetroit.com/wp-content/uploads/2012/10/Nike-Air-Force-1-Low-Black-Camo-1.jpg" },
   { id:2,  brands:"Nike × Off-White",         brandTags:["Nike","Off-White"],             name:"Air Max 97 Off-White",              year:2017, cat:"スニーカー", orig:25000,  market:120000, rarity:"very_rare", icon:"AM97", isNew:false, desc:"Virgil Ablohによる革命的デザイン。外部エアユニット露出が特徴。",                                     points:["外部エアユニット露出","タグ&ジップタイ付属","半透明ソールに刻印"],                   searchKeyword:"ナイキ エアマックス97 スニーカー",              imageUrl:"https://sneakerbardetroit.com/wp-content/uploads/2018/10/Off-White-Nike-Air-Max-97-Black-Cone-Release-Date.jpg" },
@@ -188,6 +191,9 @@ export default function CollabClient() {
                   color: "#0E1B2E", fontWeight: 700,
                 }}>NEW</div>
               )}
+              <div style={{ position: "absolute", bottom: 8, right: 8, zIndex: 10 }}>
+                <WishlistButton id={c.id} />
+              </div>
 
               {/* 画像エリア */}
               <div style={{
@@ -232,7 +238,10 @@ export default function CollabClient() {
                 <p style={{ fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "#B8974A", marginBottom: 4 }}>{selected.brands}</p>
                 <h2 style={{ fontSize: 20, fontWeight: 300, color: "#F5F0E8", fontFamily: "Georgia, serif" }}>{selected.name}</h2>
               </div>
-              <button onClick={() => setSelected(null)} style={{ color: "#5A6E85", fontSize: 24, background: "none", border: "none", cursor: "pointer", lineHeight: 1, marginTop: 4 }}>×</button>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <WishlistButton id={selected.id} size="lg" />
+                <button onClick={() => setSelected(null)} style={{ color: "#5A6E85", fontSize: 24, background: "none", border: "none", cursor: "pointer", lineHeight: 1, marginTop: 4 }}>×</button>
+              </div>
             </div>
 
             <div style={{ padding: 20 }}>
@@ -242,6 +251,13 @@ export default function CollabClient() {
               </div>
 
               <p style={{ fontSize: 13, color: "rgba(245,240,232,.6)", lineHeight: 1.7, marginBottom: 16 }}>{selected.desc}</p>
+
+              {/* 相場チャート */}
+              {(() => {
+                const history = generatePriceHistory(selected.year, selected.orig, selected.market, selected.rarity);
+                const idx = getBuyIndex(history);
+                return <PriceChart data={history} buyIndex={idx} />;
+              })()}
 
               {/* スペック */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16 }}>
