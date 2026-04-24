@@ -23,6 +23,21 @@ interface Collab {
 const RARITY_LABEL = { common: "普通", uncommon: "やや希少", rare: "希少", very_rare: "超希少" };
 const RARITY_COLOR = { common: "#6B7280", uncommon: "#2563EB", rare: "#7C3AED", very_rare: "#DC2626" };
 
+// カテゴリ別デフォルト画像（imageUrl も楽天APIも無い場合の最終フォールバック）
+const DEFAULT_IMG: Record<string, string> = {
+  "スニーカー": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
+  "ジャケット": "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&q=80",
+  "デニム":     "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80",
+  "パーカー":   "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80",
+  "Tシャツ":    "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80",
+  "ブーツ":     "https://images.unsplash.com/photo-1520639888713-7851133b1ed0?w=600&q=80",
+  "シューズ":   "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=600&q=80",
+  "パンツ":     "https://images.unsplash.com/photo-1473966968600-fa801b2da1ed?w=600&q=80",
+};
+const FALLBACK_IMG = "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=600&q=80";
+const pickImg = (direct: string, rakuten: string | null | undefined, cat: string) =>
+  direct || rakuten || DEFAULT_IMG[cat] || FALLBACK_IMG;
+
 const COLLABS: Collab[] = [
   // ── Nike ──
   { id:1,  brands:"Nike × Supreme",          brandTags:["Nike","Supreme"],               name:"Air Force 1 Low Supreme",          year:2012, cat:"スニーカー", orig:15000,  market:85000,  rarity:"rare",      icon:"AF1",  isNew:false, desc:"SupremeのBox LogoとNike AF1の伝説的コラボ。赤・黒・白の3カラーが存在。",                              points:["Side Swooshがレザー製","Box Logo刺繍が高密度","靴底にSupremeロゴ"],                   searchKeyword:"ナイキ エアフォース1 スニーカー メンズ",        imageUrl:"https://sneakerbardetroit.com/wp-content/uploads/2012/10/Nike-Air-Force-1-Low-Black-Camo-1.jpg" },
@@ -30,9 +45,9 @@ const COLLABS: Collab[] = [
   { id:9,  brands:"Nike × Travis Scott",      brandTags:["Nike","Travis Scott"],          name:"Air Jordan 1 High",                year:2019, cat:"スニーカー", orig:16500,  market:150000, rarity:"very_rare", icon:"AJ1",  isNew:false, desc:"逆向きSwooshとポケット付きが特徴的なAJ1コラボ。",                                                      points:["Swooshが逆向き","ポケット付き特殊仕様","隠しトラビスロゴ"],                         searchKeyword:"ナイキ エアジョーダン1 ハイカット スニーカー",   imageUrl:"https://sneakerbardetroit.com/wp-content/uploads/2019/04/Travis-Scott-Air-Jordan-1-High-OG-CD4487-100-Release-Date-Price.jpg" },
   { id:10, brands:"Nike × Sacai",             brandTags:["Nike","Sacai"],                 name:"LDWaffle / Waffle Daybreak",       year:2019, cat:"スニーカー", orig:22000,  market:65000,  rarity:"rare",      icon:"WD",   isNew:false, desc:"二重ソールと二重アッパーが特徴のSacaiとのコラボ。ダブルスウッシュが話題。",                points:["ダブルスウッシュ","二重ソール構造","Sacaiロゴ刻印"],                                 searchKeyword:"ナイキ サカイ ワッフル スニーカー コラボ",       imageUrl:"https://sneakerbardetroit.com/wp-content/uploads/2019/07/sacai-Nike-LDWaffle-BV0073-301-BV0073-100-BV0073-001-Release-Date-Price.jpg" },
   { id:11, brands:"Nike × Fragment Design",   brandTags:["Nike","Fragment Design"],       name:"Air Jordan 1 High Fragment",       year:2014, cat:"スニーカー", orig:16000,  market:200000, rarity:"very_rare", icon:"FRG",  isNew:false, desc:"藤原ヒロシ率いるFragment Designとの伝説的コラボAJ1。雷マークが刻印。",                       points:["Fragment雷マーク刻印","ネイビー×ホワイト配色","Hiroshi Fujiwara監修"],              searchKeyword:"ナイキ エアジョーダン1 フラグメント スニーカー",  imageUrl:"https://sneakerbardetroit.com/wp-content/uploads/2014/12/fragment-design-x-air-jordan-1-retro-high-og-11.jpg" },
-  { id:16, brands:"Nike × CLOT",              brandTags:["Nike","CLOT"],                  name:"Air Max 1 Kiss of Death",          year:2006, cat:"スニーカー", orig:13000,  market:300000, rarity:"very_rare", icon:"KOD",  isNew:false, desc:"Edison Chenによる鍼灸インスパイアデザイン。透明アウトソールに経絡図が描かれた伝説的1足。",     points:["透明アウトソールに経絡ポイント刻印","シルク素材のアッパー","CLOTの龍マーク刻印"],     searchKeyword:"ナイキ エアマックス1 クロット スニーカー",       imageUrl:"" },
-  { id:17, brands:"Nike × atmos",             brandTags:["Nike","atmos"],                 name:"Air Max 1 Elephant",               year:2006, cat:"スニーカー", orig:10000,  market:400000, rarity:"very_rare", icon:"ATM",  isNew:false, desc:"東京・原宿のatmosとのコラボ。AJ3のエレファントプリントをAM1に落とし込んだ歴史的1足。",        points:["エレファントプリントの微細なシボ感","翡翠グリーンのエアユニット","atmos刻印インソール"], searchKeyword:"ナイキ エアマックス1 エレファント スニーカー",  imageUrl:"" },
-  { id:18, brands:"Nike × Patta",             brandTags:["Nike","Patta"],                 name:"Air Max 1 The Wave",               year:2021, cat:"スニーカー", orig:17000,  market:150000, rarity:"very_rare", icon:"PTA",  isNew:false, desc:"アムステルダム発Pattaとのコラボ。ウェーブ型マッドガードが革新的。ブレスレット同梱版は超希少。", points:["ウェーブ型マッドガードの成形精度","Patta「P」ロゴインソール刻印","ブレスレット付属（2021年版）"], searchKeyword:"ナイキ エアマックス1 パタ スニーカー",       imageUrl:"" },
+  { id:16, brands:"Nike × CLOT",              brandTags:["Nike","CLOT"],                  name:"Air Max 1 Kiss of Death",          year:2006, cat:"スニーカー", orig:13000,  market:300000, rarity:"very_rare", icon:"KOD",  isNew:false, desc:"Edison Chenによる鍼灸インスパイアデザイン。透明アウトソールに経絡図が描かれた伝説的1足。",     points:["透明アウトソールに経絡ポイント刻印","シルク素材のアッパー","CLOTの龍マーク刻印"],     searchKeyword:"ナイキ エアマックス1 クロット スニーカー",       imageUrl:"https://static.sneakerjagers.com/products/660x660/187336.jpg" },
+  { id:17, brands:"Nike × atmos",             brandTags:["Nike","atmos"],                 name:"Air Max 1 Elephant",               year:2006, cat:"スニーカー", orig:10000,  market:400000, rarity:"very_rare", icon:"ATM",  isNew:false, desc:"東京・原宿のatmosとのコラボ。AJ3のエレファントプリントをAM1に落とし込んだ歴史的1足。",        points:["エレファントプリントの微細なシボ感","翡翠グリーンのエアユニット","atmos刻印インソール"], searchKeyword:"ナイキ エアマックス1 エレファント スニーカー",  imageUrl:"https://static.sneakerjagers.com/products/660x660/150899.jpg" },
+  { id:18, brands:"Nike × Patta",             brandTags:["Nike","Patta"],                 name:"Air Max 1 The Wave",               year:2021, cat:"スニーカー", orig:17000,  market:150000, rarity:"very_rare", icon:"PTA",  isNew:false, desc:"アムステルダム発Pattaとのコラボ。ウェーブ型マッドガードが革新的。ブレスレット同梱版は超希少。", points:["ウェーブ型マッドガードの成形精度","Patta「P」ロゴインソール刻印","ブレスレット付属（2021年版）"], searchKeyword:"ナイキ エアマックス1 パタ スニーカー",       imageUrl:"https://static.sneakerjagers.com/products/660x660/237019.jpg" },
   { id:19, brands:"Nike × Undercover",        brandTags:["Nike","Undercover"],            name:"React Element 87",                 year:2017, cat:"スニーカー", orig:20000,  market:100000, rarity:"rare",      icon:"UC",   isNew:false, desc:"Jun TakahashiとNikeのコラボ。半透明アッパーとReactフォームの組み合わせ。",                      points:["半透明アッパーの質感","UnderoverとNikeの共同タグ","React素材の中敷き透明感"],         searchKeyword:"ナイキ アンダーカバー スニーカー",              imageUrl:"" },
   { id:20, brands:"Nike × ACRONYM",           brandTags:["Nike","ACRONYM"],               name:"Air Presto Mid",                   year:2016, cat:"スニーカー", orig:17000,  market:150000, rarity:"very_rare", icon:"ACR",  isNew:false, desc:"Errolson HughによるPresto改。サイドジッパーとストラップを追加した機能至上主義デザイン。",      points:["サイドジッパーの開閉精度","Tシャツサイズ（XS〜XL）での販売","トゥボックスのリインフォース"], searchKeyword:"ナイキ アクロニウム プレスト スニーカー",    imageUrl:"" },
   { id:21, brands:"Nike × Tom Sachs",         brandTags:["Nike","Tom Sachs"],             name:"Mars Yard 2.0",                    year:2017, cat:"スニーカー", orig:20000,  market:500000, rarity:"very_rare", icon:"MY2",  isNew:false, desc:"アーティストTom SachsとNikeCraftのコラボ。NASA素材を使った現代スニーカー史上最も希少な1足の一つ。", points:["NikeCraft表記タグ（Nike本体でない）","Vectranクリーム/赤の素材構成","Tom Sachs手書き風グラフィック"], searchKeyword:"ナイキ トムサックス マーズヤード スニーカー", imageUrl:"" },
@@ -182,11 +197,7 @@ export default function CollabClient() {
                 display: "flex", alignItems: "center", justifyContent: "center",
                 overflow: "hidden",
               }}>
-                {(c.imageUrl || imgSrc) ? (
-                  <Image src={c.imageUrl || imgSrc!} alt={c.name} fill style={{ objectFit: "cover" }} unoptimized />
-                ) : (
-                  <span style={{ fontFamily: "Georgia, serif", fontSize: 22, color: "rgba(184,151,74,.3)" }}>{c.icon}</span>
-                )}
+                <Image src={pickImg(c.imageUrl, imgSrc, c.cat)} alt={c.name} fill style={{ objectFit: "cover" }} unoptimized />
                 <div style={{
                   position: "absolute", top: 8, right: 8,
                   fontSize: 7, letterSpacing: "0.1em", textTransform: "uppercase",
@@ -227,11 +238,7 @@ export default function CollabClient() {
             <div style={{ padding: 20 }}>
               {/* 画像 */}
               <div style={{ height: 200, position: "relative", background: "rgba(20,30,50,.8)", border: "1px solid rgba(184,151,74,.1)", marginBottom: 16, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                {(selected.imageUrl || images[selected.searchKeyword]) ? (
-                  <Image src={selected.imageUrl || images[selected.searchKeyword]!} alt={selected.name} fill style={{ objectFit: "cover" }} unoptimized />
-                ) : (
-                  <span style={{ fontFamily: "Georgia, serif", fontSize: 48, color: "rgba(184,151,74,.3)" }}>{selected.icon}</span>
-                )}
+                <Image src={pickImg(selected.imageUrl, images[selected.searchKeyword], selected.cat)} alt={selected.name} fill style={{ objectFit: "cover" }} unoptimized />
               </div>
 
               <p style={{ fontSize: 13, color: "rgba(245,240,232,.6)", lineHeight: 1.7, marginBottom: 16 }}>{selected.desc}</p>
