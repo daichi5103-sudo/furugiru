@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { BRANDS } from "@/lib/brands";
+import { BRAND_ITEMS } from "@/lib/brandItems";
 
 const BASE_URL = "https://furugiru.vercel.app";
 
@@ -71,6 +72,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.4,
     },
+    {
+      url: `${BASE_URL}/events`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/glossary`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/size`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/condition`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
   ];
 
   const brandPages: MetadataRoute.Sitemap = BRANDS.map((brand) => ({
@@ -80,5 +105,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...brandPages];
+  const itemPages: MetadataRoute.Sitemap = BRAND_ITEMS.map((item) => ({
+    url: `${BASE_URL}/brands/${item.brandSlug}/${item.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.75,
+  }));
+
+  const privacyPage: MetadataRoute.Sitemap = [
+    {
+      url: `${BASE_URL}/privacy`,
+      lastModified: new Date(),
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    },
+  ];
+
+  return [...staticPages, ...brandPages, ...itemPages, ...privacyPage];
 }

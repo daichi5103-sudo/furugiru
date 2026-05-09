@@ -21,6 +21,9 @@ const NAV_LINKS = [
   { label: "コラボ",       href: "/collabs" },
   { label: "トレンド",     href: "/trend" },
   { label: "カレンダー",   href: "/calendar" },
+  { label: "サイズガイド", href: "/size" },
+  { label: "用語集",       href: "/glossary" },
+  { label: "コンディション", href: "/condition" },
 ];
 
 export default function CarePage() {

@@ -1,7 +1,12 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { BRANDS, getBrandBySlug, RARITY_LABEL, RARITY_COLOR } from "@/lib/brands";
+import { getItemsByBrand } from "@/lib/brandItems";
+import { getCheckerMode } from "@/lib/tagChecker";
 import AdSense from "@/components/AdSense";
+import dynamic from "next/dynamic";
+
+const RecentlyViewed = dynamic(() => import("@/components/RecentlyViewed"), { ssr: false });
 
 interface Props {
   params: { slug: string };
@@ -38,6 +43,8 @@ const NAV_LINKS = [
 export default function BrandDetailPage({ params }: Props) {
   const brand = getBrandBySlug(params.slug);
   if (!brand) notFound();
+  const brandItems = getItemsByBrand(params.slug);
+  const checkerMode = getCheckerMode(params.slug);
 
   return (
     <div style={{ background: NAVY, minHeight: "100vh", fontFamily: "'Helvetica Neue', sans-serif" }}>
@@ -122,6 +129,34 @@ export default function BrandDetailPage({ params }: Props) {
         <div style={{ marginBottom: 40 }}>
           <AdSense slot="8888888888" format="horizontal" className="w-full" />
         </div>
+
+        {/* Tag checker CTA */}
+        {checkerMode && (
+          <div style={{ marginBottom: 32 }}>
+            <Link
+              href={`/brands/${brand.slug}/tag-checker`}
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                padding: "18px 24px",
+                border: `1px solid ${brand.color}55`,
+                background: `${brand.color}0D`,
+                textDecoration: "none",
+              }}
+            >
+              <div>
+                <p style={{ fontSize: 9, letterSpacing: "0.15em", textTransform: "uppercase", color: GOLD, marginBottom: 4 }}>
+                  {checkerMode === "era" ? "Tag Era Checker" : "Fake Detection Checker"}
+                </p>
+                <p style={{ fontSize: 15, color: CREAM }}>
+                  {checkerMode === "era"
+                    ? `手元のタグが何年代か判定する →`
+                    : `偽物チェックリストで確認する →`}
+                </p>
+              </div>
+              <span style={{ fontSize: 22, color: GOLD, fontFamily: "Georgia, serif" }}>→</span>
+            </Link>
+          </div>
+        )}
 
         {/* Tag eras timeline */}
         <section style={{ marginBottom: 56 }}>
@@ -289,6 +324,45 @@ export default function BrandDetailPage({ params }: Props) {
           </div>
         </section>
 
+        {/* Item price guides */}
+        {brandItems.length > 0 && (
+          <section style={{ marginBottom: 56 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 32 }}>
+              <div style={{ flex: 1, height: 1, background: "rgba(184,151,74,.2)" }} />
+              <p style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: GOLD }}>Price Guide</p>
+              <div style={{ flex: 1, height: 1, background: "rgba(184,151,74,.2)" }} />
+            </div>
+            <h2 style={{ fontSize: 28, fontWeight: 300, color: CREAM, fontFamily: "Georgia, serif", marginBottom: 8 }}>
+              アイテム別 相場ガイド
+            </h2>
+            <p style={{ fontSize: 13, color: "rgba(245,240,232,.4)", marginBottom: 24 }}>
+              コンディション別価格・年代プレミアム・買い時を確認できます
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              {brandItems.map((item) => (
+                <Link key={item.slug} href={`/brands/${item.brandSlug}/${item.slug}`} style={{
+                  display: "grid", gridTemplateColumns: "1fr auto",
+                  alignItems: "center", padding: "16px 20px",
+                  border: "1px solid rgba(184,151,74,.1)",
+                  background: "rgba(255,255,255,.02)",
+                  textDecoration: "none",
+                }}>
+                  <div>
+                    <p style={{ fontSize: 14, color: CREAM, marginBottom: 2 }}>{item.nameJp}</p>
+                    <p style={{ fontSize: 10, color: MUTED }}>{item.category}</p>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <p style={{ fontSize: 16, color: GOLD, fontFamily: "Georgia, serif" }}>
+                      ¥{item.currentMarket.toLocaleString()}
+                    </p>
+                    <p style={{ fontSize: 9, color: MUTED }}>相場（A品）</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Other brands */}
         <section>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 24 }}>
@@ -323,6 +397,12 @@ export default function BrandDetailPage({ params }: Props) {
             </Link>
           </div>
         </section>
+
+        {/* 閲覧記録（localStorageに保存、UIなし） */}
+        <RecentlyViewed
+          mode="record"
+          currentBrand={{ slug: brand.slug, name: brand.name, nameJp: brand.nameJp, color: brand.color }}
+        />
       </main>
 
       {/* ── Footer ── */}

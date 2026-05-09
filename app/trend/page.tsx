@@ -1,5 +1,24 @@
+import { readFileSync } from "fs";
+import { join } from "path";
 import Link from "next/link";
 import AdSense from "@/components/AdSense";
+
+type TrendRssItem = { title: string; link: string; date: string; source: string };
+type TrendRss = { updatedAt: string; items: TrendRssItem[] };
+
+function getTrendRss(): TrendRss {
+  try {
+    return JSON.parse(readFileSync(join(process.cwd(), "lib/trend-rss.json"), "utf-8")) as TrendRss;
+  } catch {
+    return { updatedAt: "", items: [] };
+  }
+}
+
+function decodeEntities(str: string): string {
+  return str
+    .replace(/&#(\d+);/g, (_, code: string) => String.fromCharCode(Number(code)))
+    .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+}
 
 export const metadata = {
   title: "古着トレンド | FURUGIRU",
@@ -16,9 +35,12 @@ const NAV_LINKS = [
   { label: "お手入れ",     href: "/care" },
   { label: "シミ取り",     href: "/care/stain" },
   { label: "古着屋を探す", href: "/shops" },
-  { label: "コラボ",       href: "/collabs" },
-  { label: "トレンド",     href: "/trend" },
-  { label: "カレンダー",   href: "/calendar" },
+  { label: "コラボ",         href: "/collabs" },
+  { label: "トレンド",       href: "/trend" },
+  { label: "カレンダー",     href: "/calendar" },
+  { label: "サイズガイド",   href: "/size" },
+  { label: "用語集",         href: "/glossary" },
+  { label: "コンディション", href: "/condition" },
 ];
 
 const TRENDS_GENERAL = [
@@ -58,6 +80,7 @@ function badgeColor(badge: string) {
 }
 
 export default function TrendPage() {
+  const trendRss = getTrendRss();
   return (
     <div style={{ background: NAVY, minHeight: "100vh", fontFamily: "'Helvetica Neue', sans-serif" }}>
 
@@ -169,6 +192,52 @@ export default function TrendPage() {
             </div>
           ))}
         </section>
+
+        {/* ── 最新ニュース（RSS） ── */}
+        {trendRss.items.length > 0 && (
+          <section style={{ marginBottom: 40 }}>
+            <p style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: GOLD, marginBottom: 8 }}>
+              Latest News
+            </p>
+            <h2 style={{ fontSize: 20, fontWeight: 300, color: CREAM, fontFamily: "Georgia, serif", marginBottom: 4 }}>
+              古着・ヴィンテージ最新ニュース
+            </h2>
+            <p style={{ fontSize: 11, color: MUTED, marginBottom: 16 }}>
+              更新: {trendRss.updatedAt ? new Date(trendRss.updatedAt).toLocaleString("ja-JP") : "—"}
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              {trendRss.items.map((item) => (
+                <a
+                  key={item.link}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "block", padding: "12px 16px",
+                    background: "rgba(255,255,255,.015)",
+                    border: "1px solid rgba(184,151,74,.08)",
+                    textDecoration: "none",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                    <span style={{
+                      fontSize: 7, letterSpacing: "0.14em", textTransform: "uppercase",
+                      padding: "1px 6px", border: "1px solid rgba(184,151,74,.3)", color: GOLD,
+                    }}>
+                      {item.source}
+                    </span>
+                    <span style={{ fontSize: 10, color: MUTED }}>
+                      {new Date(item.date).toLocaleDateString("ja-JP")}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: 13, color: CREAM, lineHeight: 1.55 }}>
+                    {decodeEntities(item.title)}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* ── Bottom Ad ── */}
         <AdSense slot="trend-bottom" format="rectangle" className="w-full" />

@@ -1,5 +1,8 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { TRENDING } from "@/lib/markets";
+
+const RecentlyViewed = dynamic(() => import("@/components/RecentlyViewed"), { ssr: false });
 
 const GOLD  = "#B8974A";
 const CREAM = "#F5F0E8";
@@ -16,6 +19,7 @@ const NAV_LINKS = [
   { label: "欲しいリスト", href: "/wishlist" },
   { label: "トレンド",     href: "/trend" },
   { label: "カレンダー",   href: "/calendar" },
+  { label: "イベント",     href: "/events" },
 ];
 
 const FEATURES = [
@@ -28,6 +32,7 @@ const FEATURES = [
   { label: "鑑定クイズ",   sub: "全10問で本物を見抜け",            href: "/quiz",                color: "#E84033" },
   { label: "欲しいリスト", sub: "コラボを保存して相場管理",        href: "/wishlist",            color: "#3A8A5A" },
   { label: "トレンド",     sub: "X & フリマ売れ筋リアルタイム",   href: "/trend",               color: "#B84A1E" },
+  { label: "イベント",     sub: "全国の骨董市・蚤の市カレンダー",  href: "/events",              color: "#2A7AB5" },
 ];
 
 export default function HomePage() {
@@ -261,6 +266,11 @@ export default function HomePage() {
         </Link>
       </section>
 
+      {/* ── 最近チェックしたブランド ── */}
+      <section style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px 48px" }}>
+        <RecentlyViewed mode="display" />
+      </section>
+
       {/* ── Footer ── */}
       <footer style={{
         borderTop: `1px solid rgba(184,151,74,.1)`, padding: "28px 24px",
@@ -269,9 +279,12 @@ export default function HomePage() {
         <p style={{ fontSize: 10, color: `rgba(245,240,232,.2)`, letterSpacing: "0.05em", marginBottom: 8 }}>
           © 2026 FURUGIRU — 古着フリマ一括比較サイト
         </p>
-        <p style={{ fontSize: 10, color: `rgba(245,240,232,.15)`, letterSpacing: "0.04em" }}>
+        <p style={{ fontSize: 10, color: `rgba(245,240,232,.15)`, letterSpacing: "0.04em", marginBottom: 12 }}>
           本サイトはメルカリ・ラクマ・ヤフオクの公式サービスではありません。
         </p>
+        <Link href="/privacy" style={{ fontSize: 9, color: `rgba(245,240,232,.25)`, letterSpacing: "0.1em", textDecoration: "none" }}>
+          プライバシーポリシー
+        </Link>
       </footer>
     </div>
   );

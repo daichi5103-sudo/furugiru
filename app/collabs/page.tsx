@@ -1,6 +1,36 @@
+import { readFileSync } from "fs";
+import { join } from "path";
 import Link from "next/link";
 import AdSense from "@/components/AdSense";
 import CollabClient from "@/components/CollabClient";
+
+type RssItem = { title: string; link: string; date: string; source: string };
+type CollabRss = { updatedAt: string; items: RssItem[] };
+
+function getCollabRss(): CollabRss {
+  try {
+    const filePath = join(process.cwd(), "lib/collab-rss.json");
+    return JSON.parse(readFileSync(filePath, "utf-8")) as CollabRss;
+  } catch {
+    return { updatedAt: "", items: [] };
+  }
+}
+
+function decodeEntities(str: string): string {
+  return str
+    .replace(/&#(\d+);/g, (_, code: string) => String.fromCharCode(Number(code)))
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'");
+}
+
+function sourceLabel(source: string): string {
+  if (source.toLowerCase().includes("sneakernews")) return "SneakerNews";
+  if (source.toLowerCase().includes("hypebeast"))   return "Hypebeast";
+  return "Highsnobiety";
+}
 
 export const metadata = {
   title: "コラボアーカイブ | FURUGIRU",
@@ -17,12 +47,17 @@ const NAV_LINKS = [
   { label: "お手入れ",     href: "/care" },
   { label: "シミ取り",     href: "/care/stain" },
   { label: "古着屋を探す", href: "/shops" },
-  { label: "コラボ",       href: "/collabs" },
-  { label: "トレンド",     href: "/trend" },
-  { label: "カレンダー",   href: "/calendar" },
+  { label: "コラボ",         href: "/collabs" },
+  { label: "トレンド",       href: "/trend" },
+  { label: "カレンダー",     href: "/calendar" },
+  { label: "サイズガイド",   href: "/size" },
+  { label: "用語集",         href: "/glossary" },
+  { label: "コンディション", href: "/condition" },
 ];
 
 export default function CollabPage() {
+  const rss = getCollabRss();
+
   return (
     <div style={{ background: NAVY, minHeight: "100vh", fontFamily: "'Helvetica Neue', sans-serif" }}>
 
@@ -70,6 +105,58 @@ export default function CollabPage() {
         </div>
 
         <CollabClient />
+
+        {/* ── 新着ニュース ── */}
+        {rss.items.length > 0 && (
+          <section style={{ marginTop: 56 }}>
+            <p style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: GOLD, marginBottom: 8 }}>
+              Latest News
+            </p>
+            <h2 style={{
+              fontSize: 20, fontWeight: 300, color: CREAM,
+              fontFamily: "Georgia, serif", marginBottom: 4,
+            }}>
+              新着コラボニュース
+            </h2>
+            <p style={{ fontSize: 11, color: MUTED, marginBottom: 20 }}>
+              更新: {rss.updatedAt ? new Date(rss.updatedAt).toLocaleString("ja-JP") : "—"}
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              {rss.items.slice(0, 10).map((item) => (
+                <a
+                  key={item.link}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "block",
+                    padding: "12px 16px",
+                    background: "rgba(255,255,255,.015)",
+                    border: "1px solid rgba(184,151,74,.08)",
+                    color: CREAM,
+                    textDecoration: "none",
+                    transition: "background .12s",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                    <span style={{
+                      fontSize: 7, letterSpacing: "0.14em", textTransform: "uppercase",
+                      padding: "1px 6px", border: "1px solid rgba(184,151,74,.3)", color: GOLD,
+                    }}>
+                      {sourceLabel(item.source)}
+                    </span>
+                    <span style={{ fontSize: 10, color: MUTED }}>
+                      {new Date(item.date).toLocaleDateString("ja-JP")}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: 13, color: CREAM, lineHeight: 1.55 }}>
+                    {decodeEntities(item.title)}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
 
         <div style={{ marginTop: 40 }}>
           <AdSense slot="collab-bottom" format="rectangle" className="w-full" />
