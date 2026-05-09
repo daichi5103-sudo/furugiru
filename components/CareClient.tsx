@@ -2,6 +2,26 @@
 import { useState } from "react";
 import { CareMaterial, CareStep } from "@/lib/care";
 
+const TYPE_COLORS: Record<string, string> = {
+  "おしゃれ着洗剤":               "#2563EB",
+  "デニム専用洗剤":               "#1B4FBF",
+  "天然洗剤":                     "#3A8A5A",
+  "ウール対応洗剤":               "#2A5C2A",
+  "ウール専用洗剤（すすぎ不要）":  "#2A5C2A",
+  "おしゃれ着・ウール用洗剤":     "#2A5C2A",
+  "毛玉取り器":                   "#5A6E85",
+  "乾燥用品":                     "#5A6E85",
+  "防虫剤":                       "#8B4513",
+  "ケアブラシ":                   "#5A6E85",
+  "保湿クリーム":                 "#8B4513",
+  "保湿・艶出しオイル":           "#8B4513",
+  "多機能トリートメント":         "#B8974A",
+  "レザー専用クリーナー":         "#6B3A2A",
+  "防水スプレー":                 "#1A5C7A",
+  "高級保湿クリーム":             "#8B4513",
+  "バブアー専用ワックス":         "#4A6741",
+};
+
 const NAVY = "#0E1B2E";
 const NAVY2 = "#162540";
 const GOLD = "#B8974A";
@@ -134,16 +154,17 @@ function StepCard({ step, isActive, onClick }: {
 export default function CareClient({ materials }: { materials: CareMaterial[] }) {
   const [activeMaterial, setActiveMaterial] = useState(materials[0].id);
   const [activeStep, setActiveStep] = useState<number | null>(null);
-  const [activeSection, setActiveSection] = useState<"steps" | "drying" | "storage" | "warnings" | "mistakes">("steps");
+  const [activeSection, setActiveSection] = useState<"steps" | "drying" | "storage" | "warnings" | "mistakes" | "products">("steps");
 
   const mat = materials.find((m) => m.id === activeMaterial)!;
 
   const sections = [
-    { id: "steps", label: "洗い方の手順" },
-    { id: "drying", label: "乾かし方" },
-    { id: "storage", label: "保管方法" },
+    { id: "steps",    label: "洗い方の手順" },
+    { id: "drying",   label: "乾かし方" },
+    { id: "storage",  label: "保管方法" },
     { id: "warnings", label: "OK / NG 一覧" },
     { id: "mistakes", label: "よくある失敗" },
+    { id: "products", label: "おすすめ専用品" },
   ] as const;
 
   return (
@@ -381,6 +402,68 @@ export default function CareClient({ materials }: { materials: CareMaterial[] })
                     ))}
                   </div>
                 </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {activeSection === "products" && (
+        <div>
+          <p style={{ fontSize: 12, color: MUTED, marginBottom: 16, fontFamily: "'Helvetica Neue', sans-serif", lineHeight: 1.6 }}>
+            {mat.name}のケアに役立つ専用品をまとめました。価格は参考値です。
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 12 }}>
+            {mat.products.map((p, i) => {
+              const typeColor = TYPE_COLORS[p.type] ?? MUTED;
+              return (
+                <a
+                  key={i}
+                  href={`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(p.searchQuery)}/`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "block",
+                    border: "1px solid rgba(184,151,74,.15)",
+                    background: "rgba(255,255,255,.02)",
+                    padding: "14px 16px",
+                    textDecoration: "none",
+                    transition: "border-color .15s, background .15s",
+                  }}
+                >
+                  {/* type badge */}
+                  <div style={{ marginBottom: 8 }}>
+                    <span style={{
+                      fontSize: 8, letterSpacing: "0.12em", textTransform: "uppercase",
+                      padding: "2px 7px",
+                      border: `1px solid ${typeColor}55`,
+                      color: typeColor,
+                      background: `${typeColor}11`,
+                    }}>
+                      {p.type}
+                    </span>
+                  </div>
+                  {/* brand + name */}
+                  <div style={{ marginBottom: 6 }}>
+                    <span style={{ fontSize: 9, color: MUTED, letterSpacing: "0.08em", display: "block", marginBottom: 2, fontFamily: "'Helvetica Neue', sans-serif" }}>
+                      {p.brand}
+                    </span>
+                    <span style={{ fontSize: 14, color: CREAM, fontFamily: "Georgia, serif", lineHeight: 1.3 }}>
+                      {p.name}
+                    </span>
+                  </div>
+                  {/* note */}
+                  <p style={{ fontSize: 11, color: "rgba(245,240,232,.55)", lineHeight: 1.65, marginBottom: 10, fontFamily: "'Helvetica Neue', sans-serif" }}>
+                    {p.note}
+                  </p>
+                  {/* price + link */}
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <span style={{ fontSize: 12, color: GOLD, fontFamily: "Georgia, serif" }}>{p.price}</span>
+                    <span style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: MUTED }}>
+                      楽天で探す ↗
+                    </span>
+                  </div>
+                </a>
               );
             })}
           </div>
