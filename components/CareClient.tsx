@@ -19,7 +19,15 @@ const TYPE_COLORS: Record<string, string> = {
   "レザー専用クリーナー":         "#6B3A2A",
   "防水スプレー":                 "#1A5C7A",
   "高級保湿クリーム":             "#8B4513",
-  "バブアー専用ワックス":         "#4A6741",
+  "バブアー専用ワックス":               "#4A6741",
+  "スニーカー専用クリーナー":           "#2D6A8F",
+  "スニーカークリーナーシート":         "#2D6A8F",
+  "防水・汚れ防止スプレー":             "#1A5C7A",
+  "スエード専用ブラシ":                 "#6B3A2A",
+  "スエード専用クリーナー＆補色":       "#6B3A2A",
+  "シューキーパー":                     "#5A6E85",
+  "ソール黄ばみ取り":                   "#7A6A2A",
+  "保管用乾燥剤":                       "#5A6E85",
 };
 
 const NAVY = "#0E1B2E";
@@ -29,10 +37,11 @@ const CREAM = "#F5F0E8";
 const MUTED = "#5A6E85";
 
 const MATERIAL_ICONS: Record<string, string> = {
-  denim: "D",
-  sweat: "S",
-  knit: "K",
-  leather: "L",
+  denim:    "D",
+  sweat:    "S",
+  knit:     "K",
+  leather:  "L",
+  sneakers: "SN",
 };
 
 function WarnIcon({ type }: { type: "no" | "caution" | "ok" }) {
@@ -174,7 +183,7 @@ export default function CareClient({ materials }: { materials: CareMaterial[] })
         <p style={{ fontSize: 9, letterSpacing: "0.15em", textTransform: "uppercase", color: MUTED, marginBottom: 12, fontFamily: "'Helvetica Neue', sans-serif" }}>
           素材を選んでください
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))", gap: 8 }}>
           {materials.map((m) => (
             <button
               key={m.id}
