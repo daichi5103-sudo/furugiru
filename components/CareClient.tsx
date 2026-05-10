@@ -426,18 +426,13 @@ export default function CareClient({ materials }: { materials: CareMaterial[] })
             {mat.products.map((p, i) => {
               const typeColor = TYPE_COLORS[p.type] ?? MUTED;
               return (
-                <a
+                <div
                   key={i}
-                  href={`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(p.searchQuery)}/`}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   style={{
                     display: "block",
                     border: "1px solid rgba(184,151,74,.15)",
                     background: "rgba(255,255,255,.02)",
                     padding: "14px 16px",
-                    textDecoration: "none",
-                    transition: "border-color .15s, background .15s",
                   }}
                 >
                   {/* type badge */}
@@ -465,14 +460,44 @@ export default function CareClient({ materials }: { materials: CareMaterial[] })
                   <p style={{ fontSize: 11, color: "rgba(245,240,232,.55)", lineHeight: 1.65, marginBottom: 10, fontFamily: "'Helvetica Neue', sans-serif" }}>
                     {p.note}
                   </p>
-                  {/* price + link */}
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  {/* price */}
+                  <div style={{ marginBottom: 10 }}>
                     <span style={{ fontSize: 12, color: GOLD, fontFamily: "Georgia, serif" }}>{p.price}</span>
-                    <span style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: MUTED }}>
-                      楽天で探す ↗
-                    </span>
                   </div>
-                </a>
+                  {/* affiliate buttons */}
+                  <div style={{ display: "flex", gap: 6 }}>
+                    <a
+                      href={buildRakutenUrl(p.searchQuery)}
+                      target="_blank"
+                      rel="noopener noreferrer sponsored"
+                      onClick={(e) => e.stopPropagation()}
+                      style={{
+                        flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 4,
+                        padding: "6px 8px",
+                        background: "rgba(191,0,0,.12)", border: "1px solid rgba(191,0,0,.35)",
+                        fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase",
+                        color: "#E84040", textDecoration: "none",
+                      }}
+                    >
+                      楽天 ↗
+                    </a>
+                    <a
+                      href={buildAmazonUrl(p.amazonQuery ?? p.searchQuery)}
+                      target="_blank"
+                      rel="noopener noreferrer sponsored"
+                      onClick={(e) => e.stopPropagation()}
+                      style={{
+                        flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 4,
+                        padding: "6px 8px",
+                        background: "rgba(255,153,0,.10)", border: "1px solid rgba(255,153,0,.35)",
+                        fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase",
+                        color: "#E8A000", textDecoration: "none",
+                      }}
+                    >
+                      Amazon ↗
+                    </a>
+                  </div>
+                </div>
               );
             })}
           </div>
@@ -520,4 +545,20 @@ function hexToRgb(hex: string): string {
   const g = parseInt(hex.slice(3, 5), 16) || 0;
   const b = parseInt(hex.slice(5, 7), 16) || 0;
   return `${r},${g},${b}`;
+}
+
+// ── アフィリエイトURL生成 ──────────────────────────────────────────
+const RAKUTEN_AFF_ID  = process.env.NEXT_PUBLIC_RAKUTEN_AFFILIATE_ID ?? "";
+const AMAZON_TAG      = process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG ?? "";
+
+function buildRakutenUrl(query: string): string {
+  const searchUrl = `https://search.rakuten.co.jp/search/mall/${encodeURIComponent(query)}/`;
+  if (!RAKUTEN_AFF_ID) return searchUrl;
+  return `https://hb.afl.rakuten.co.jp/hgc/${RAKUTEN_AFF_ID}/?pc=${encodeURIComponent(searchUrl)}&link_type=text&ut=eyJwYWdlIjoic2hvcCIsInR5cGUiOiJ0ZXh0Iiwic2l6ZSI6IjI0MHgzMDAiLCJuYW0iOjEsIm5hbXAiOiJyaWdodCIsImNvbSI6MSwiY29tcCI6ImxlZnQiLCJwcmljZSI6MCwiYm9yIjoxLCJjb2wiOjAsImJidG4iOjEsInByb2QiOjAsImFtcCI6ZmFsc2V9`;
+}
+
+function buildAmazonUrl(query: string): string {
+  const base = `https://www.amazon.co.jp/s?k=${encodeURIComponent(query)}`;
+  if (!AMAZON_TAG) return base;
+  return `${base}&tag=${AMAZON_TAG}`;
 }

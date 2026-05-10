@@ -2,12 +2,13 @@
 // 素材別洗い方・ケアガイドデータ
 
 export interface RecommendedProduct {
-  name: string;         // 製品名
-  brand: string;        // ブランド名
-  type: string;         // 用途ラベル（洗剤・クリーナー・クリームなど）
-  price: string;        // 参考価格帯
-  note: string;         // 特徴・使い方のポイント
-  searchQuery: string;  // 楽天・Amazon 検索用クエリ
+  name: string;          // 製品名
+  brand: string;         // ブランド名
+  type: string;          // 用途ラベル（洗剤・クリーナー・クリームなど）
+  price: string;         // 参考価格帯
+  note: string;          // 特徴・使い方のポイント
+  searchQuery: string;   // 楽天検索クエリ
+  amazonQuery?: string;  // Amazon 検索クエリ（省略時は searchQuery を流用）
 }
 
 export interface CareStep {
@@ -195,12 +196,76 @@ export const CARE_DATA: CareMaterial[] = [
         searchQuery: "ドクターベックマン カラーコレクター 色移り防止",
       },
       {
+        name: "ウルトラ濃縮アタック（デリケート用）",
+        brand: "花王",
+        type: "おしゃれ着洗剤",
+        price: "¥350〜",
+        note: "中性・無蛍光タイプで色柄物のデニムにも安心。少量で洗えるコスパの高さが魅力。",
+        searchQuery: "アタック おしゃれ着 中性洗剤",
+        amazonQuery: "アタック おしゃれ着 デリケート 洗剤",
+      },
+      {
+        name: "ナノックス(NANOX) おしゃれ着用",
+        brand: "ライオン",
+        type: "おしゃれ着洗剤",
+        price: "¥500〜",
+        note: "高濃度タイプで繊維の奥まで届き汚れをしっかり落とす。中性処方でデニムの色落ちを抑えながら洗える。",
+        searchQuery: "ナノックス おしゃれ着用",
+        amazonQuery: "NANOX おしゃれ着 中性",
+      },
+      {
+        name: "カラーキャッチャー（色移り防止シート）",
+        brand: "Dr.Beckmann（ドクターベックマン）",
+        type: "色移り防止",
+        price: "¥500〜",
+        note: "洗濯槽に入れるだけでデニムの色が他の衣類に移るのを防ぐシート。インディゴ染料の「泣き」が心配なときに一緒に入れる。",
+        searchQuery: "ドクターベックマン カラーコレクター 色移り防止",
+        amazonQuery: "Dr.Beckmann カラーコレクター",
+      },
+      {
+        name: "デニムウォッシュ",
+        brand: "EDWIN（エドウィン）",
+        type: "デニム専用洗剤",
+        price: "¥1,000〜",
+        note: "国産ジーンズブランドEDWIN純正の専用洗剤。インディゴ染料の色落ちを抑える成分配合で、ヴィンテージ501にも使いやすい。",
+        searchQuery: "エドウィン デニムウォッシュ 洗剤",
+        amazonQuery: "EDWIN デニムウォッシュ",
+      },
+      {
+        name: "マジックソープ（無香料）",
+        brand: "Dr.Bronner's",
+        type: "天然洗剤",
+        price: "¥1,500〜",
+        note: "オーガニック植物油脂100%のカスティールソープ。デニムの繊維に優しく、色落ちを抑えたい人に。",
+        searchQuery: "ドクターブロナー マジックソープ 無香料",
+        amazonQuery: "Dr.Bronner's マジックソープ",
+      },
+      {
+        name: "部分洗い固形石鹸",
+        brand: "ウタマロ",
+        type: "部分洗い石鹸",
+        price: "¥200〜",
+        note: "デニムの裾・股・ひざなど汚れやすい部分に直接こすりつけて使う固形石鹸。頑固な泥汚れや皮脂汚れに特に効果的。",
+        searchQuery: "ウタマロ 固形石鹸 部分洗い",
+        amazonQuery: "ウタマロ 石鹸 衣類",
+      },
+      {
         name: "クリーニングブラシ（ソフト）",
         brand: "コロンブス / 各社",
         type: "ケアブラシ",
         price: "¥600〜",
         note: "裾・股下など部分汚れを軽くこするのに使用。硬すぎないソフトタイプを選ぶこと。",
         searchQuery: "衣類 洗濯ブラシ ソフト",
+        amazonQuery: "衣類ブラシ ソフト 洗濯",
+      },
+      {
+        name: "洗濯ネット（大・小セット）",
+        brand: "各社",
+        type: "洗濯ネット",
+        price: "¥400〜",
+        note: "デニムを洗濯機で洗う際に生地同士の摩擦を防ぐ。大きめサイズを使うと生地がよれにくい。",
+        searchQuery: "洗濯ネット 大 セット",
+        amazonQuery: "洗濯ネット 大きめ ジーンズ",
       },
     ],
   },
@@ -343,6 +408,43 @@ export const CARE_DATA: CareMaterial[] = [
         price: "¥300〜",
         note: "パーカーをハンガーで干す場合は肩幅に合った厚型を。肩の型くずれを大幅に軽減できる。",
         searchQuery: "厚型ハンガー スウェット 肩跡なし",
+        amazonQuery: "厚型ハンガー 肩幅広い",
+      },
+      {
+        name: "ナノックス(NANOX) ONE 部分洗い",
+        brand: "ライオン",
+        type: "部分洗い洗剤",
+        price: "¥400〜",
+        note: "スウェットの首元・袖口など皮脂汚れが溜まりやすい部分に直接塗布して洗える。洗濯前の前処理に最適。",
+        searchQuery: "ナノックス 部分洗い 皮脂",
+        amazonQuery: "NANOX ONE 部分洗い",
+      },
+      {
+        name: "ボールド 液体洗剤",
+        brand: "P&G",
+        type: "おしゃれ着洗剤",
+        price: "¥450〜",
+        note: "洗浄・柔軟・消臭が1本でできる液体洗剤。スウェットを洗うのにコスパ重視で選びたい人向けの定番品。",
+        searchQuery: "ボールド 液体洗剤 おしゃれ着",
+        amazonQuery: "ボールド 液体",
+      },
+      {
+        name: "酸素系漂白剤（粉末）",
+        brand: "オキシクリーン / 各社",
+        type: "漂白・消臭剤",
+        price: "¥600〜",
+        note: "スウェットの黄ばみ・においに効果的な酸素系漂白剤。塩素系と違い色柄物にも使えてコットン素材に安心。40℃のぬるま湯に溶かしてつけ置き。",
+        searchQuery: "オキシクリーン 酸素系漂白剤 衣類",
+        amazonQuery: "OxiClean 酸素系漂白剤",
+      },
+      {
+        name: "洗濯槽クリーナー（酸素系）",
+        brand: "各社",
+        type: "洗濯槽クリーナー",
+        price: "¥400〜",
+        note: "洗濯槽のカビや雑菌が衣類のにおいの原因になる。月1回の洗濯槽クリーニングで衣類の仕上がりが大きく変わる。",
+        searchQuery: "洗濯槽クリーナー 酸素系",
+        amazonQuery: "洗濯槽クリーナー 酸素系 カビ",
       },
     ],
   },
@@ -487,6 +589,34 @@ export const CARE_DATA: CareMaterial[] = [
         price: "¥400〜",
         note: "ウール・カシミヤの虫食い防止に必須。引き出し・収納ケース用を素材に直接触れないよう使用する。",
         searchQuery: "ウール 防虫剤 衣類収納",
+        amazonQuery: "防虫剤 ウール カシミヤ 衣類",
+      },
+      {
+        name: "デリケートウォッシュ",
+        brand: "LANVIN en Bleu / 各社",
+        type: "デリケート衣類専用洗剤",
+        price: "¥1,500〜",
+        note: "カシミヤ・シルクなど最高級素材向けのブティック系洗剤。洗い上がりがふんわりとやわらかく、素材の風合いを最大限に保つ。",
+        searchQuery: "デリケートウォッシュ カシミヤ 洗剤",
+        amazonQuery: "デリケートウォッシュ ウール カシミヤ",
+      },
+      {
+        name: "洗濯ネット（細目・ファスナー付き）",
+        brand: "各社",
+        type: "洗濯ネット",
+        price: "¥300〜",
+        note: "ニットを洗濯機で洗う際の必須アイテム。目の細かいネットに入れることで摩擦を最小化できる。",
+        searchQuery: "洗濯ネット 細目 ニット 洗濯機",
+        amazonQuery: "洗濯ネット ニット 細目",
+      },
+      {
+        name: "衣類用消臭スプレー（ウール対応）",
+        brand: "ファブリーズ / リセッシュ",
+        type: "消臭スプレー",
+        price: "¥400〜",
+        note: "ウール・カシミヤは頻繁に洗えないので消臭スプレーを活用する。着用後にさっとひと吹きするだけで清潔感を保てる。",
+        searchQuery: "ファブリーズ 衣類用 消臭",
+        amazonQuery: "衣類用 消臭スプレー ウール",
       },
     ],
   },
