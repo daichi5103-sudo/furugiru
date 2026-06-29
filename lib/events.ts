@@ -147,7 +147,7 @@ export const EVENTS: VintageEvent[] = [
     venue: "鶴見緑地公園",
     category: "フリマ",
     schedule: "毎月第4日曜日",
-    nextDate: "2026-06-28",
+    nextDate: "2026-07-26",
     description: "神奈川最大規模のフリーマーケット。古着・雑貨の掘り出し物が豊富。",
     admission: "無料",
     tags: ["神奈川", "フリマ", "定期開催"],
