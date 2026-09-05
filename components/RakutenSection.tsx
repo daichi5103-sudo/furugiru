@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { RakutenItem } from "@/lib/rakuten";
+import { RakutenItem, RAKUTEN_ROOM_URL } from "@/lib/rakuten";
 
 const GOLD  = "#B8974A";
 const CREAM = "#F5F0E8";
@@ -114,7 +114,15 @@ export default function RakutenSection({ keyword }: { keyword: string }) {
             ))}
       </div>
 
-      <div style={{ marginTop: 16, textAlign: "right" }}>
+      <div style={{ marginTop: 16, display: "flex", justifyContent: "flex-end", gap: 20, flexWrap: "wrap" }}>
+        <a
+          href={RAKUTEN_ROOM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ fontSize: 11, color: MUTED, textDecoration: "underline", letterSpacing: "0.06em" }}
+        >
+          楽天ROOMでもチェック →
+        </a>
         <a
           href={`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(keyword)}/`}
           target="_blank"

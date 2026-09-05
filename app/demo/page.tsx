@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { RAKUTEN_ROOM_URL } from "@/lib/rakuten";
 
 export const metadata = {
   title: "FURUGIRU — デモ・機能紹介",
@@ -527,6 +528,14 @@ export default function DemoPage() {
           <p className="font-mono text-[10px] text-cream-50/30">
             © 2026 FURUGIRU — 本サイトはメルカリ・ラクマ・ヤフオクの公式サービスではありません。
           </p>
+          <a
+            href={RAKUTEN_ROOM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-[10px] text-cream-50/40 hover:text-cream-50/70 transition-colors"
+          >
+            楽天ROOM →
+          </a>
         </div>
       </footer>
     </div>

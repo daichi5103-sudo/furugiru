@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ShopFinder from "@/components/ShopFinder";
 import AdSense from "@/components/AdSense";
+import { RAKUTEN_ROOM_URL } from "@/lib/rakuten";
 
 export const metadata = {
   title: "近くの古着屋を探す | FURUGIRU",
@@ -78,6 +79,9 @@ export default function ShopsPage() {
         <p style={{ fontSize: 10, color: "rgba(245,240,232,.2)", letterSpacing: "0.05em" }}>
           © 2026 FURUGIRU — 店舗情報はGoogle Placesより取得。最新情報は各店舗にご確認ください。
         </p>
+        <a href={RAKUTEN_ROOM_URL} target="_blank" rel="noopener noreferrer" style={{ fontSize: 9, color: "rgba(245,240,232,.25)", letterSpacing: "0.1em", textDecoration: "none" }}>
+          楽天ROOM →
+        </a>
       </footer>
     </div>
   );

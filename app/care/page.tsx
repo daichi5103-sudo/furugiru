@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CARE_DATA } from "@/lib/care";
 import CareClient from "@/components/CareClient";
 import AdSense from "@/components/AdSense";
+import { RAKUTEN_ROOM_URL } from "@/lib/rakuten";
 
 export const metadata = {
   title: "古着の洗い方・ケアガイド | FURUGIRU",
@@ -147,6 +148,9 @@ export default function CarePage() {
         <p style={{ fontSize: 10, color: "rgba(245,240,232,.2)", fontFamily: "'Helvetica Neue', sans-serif", letterSpacing: "0.05em" }}>
           © 2026 FURUGIRU — 掲載情報は参考です。洗濯前に必ず表示タグを確認してください。
         </p>
+        <a href={RAKUTEN_ROOM_URL} target="_blank" rel="noopener noreferrer" style={{ fontSize: 9, color: "rgba(245,240,232,.25)", letterSpacing: "0.1em", textDecoration: "none", fontFamily: "'Helvetica Neue', sans-serif" }}>
+          楽天ROOM →
+        </a>
       </footer>
     </div>
   );

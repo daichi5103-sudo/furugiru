@@ -2,6 +2,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import Link from "next/link";
 import AdSense from "@/components/AdSense";
+import { RAKUTEN_ROOM_URL } from "@/lib/rakuten";
 
 type TrendRssItem = { title: string; link: string; date: string; source: string };
 type TrendRss = { updatedAt: string; items: TrendRssItem[] };
@@ -251,6 +252,9 @@ export default function TrendPage() {
         <p style={{ fontSize: 10, color: "rgba(245,240,232,.2)", letterSpacing: "0.05em" }}>
           © 2026 FURUGIRU — トレンド情報は参考値です。
         </p>
+        <a href={RAKUTEN_ROOM_URL} target="_blank" rel="noopener noreferrer" style={{ fontSize: 9, color: "rgba(245,240,232,.25)", letterSpacing: "0.1em", textDecoration: "none" }}>
+          楽天ROOM →
+        </a>
       </footer>
     </div>
   );

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { TRENDING } from "@/lib/markets";
+import { RAKUTEN_ROOM_URL } from "@/lib/rakuten";
 
 const RecentlyViewed = dynamic(() => import("@/components/RecentlyViewed"), { ssr: false });
 
@@ -282,9 +283,14 @@ export default function HomePage() {
         <p style={{ fontSize: 10, color: `rgba(245,240,232,.15)`, letterSpacing: "0.04em", marginBottom: 12 }}>
           本サイトはメルカリ・ラクマ・ヤフオクの公式サービスではありません。
         </p>
-        <Link href="/privacy" style={{ fontSize: 9, color: `rgba(245,240,232,.25)`, letterSpacing: "0.1em", textDecoration: "none" }}>
-          プライバシーポリシー
-        </Link>
+        <div style={{ display: "flex", justifyContent: "center", gap: 16 }}>
+          <Link href="/privacy" style={{ fontSize: 9, color: `rgba(245,240,232,.25)`, letterSpacing: "0.1em", textDecoration: "none" }}>
+            プライバシーポリシー
+          </Link>
+          <a href={RAKUTEN_ROOM_URL} target="_blank" rel="noopener noreferrer" style={{ fontSize: 9, color: `rgba(245,240,232,.25)`, letterSpacing: "0.1em", textDecoration: "none" }}>
+            楽天ROOM →
+          </a>
+        </div>
       </footer>
     </div>
   );

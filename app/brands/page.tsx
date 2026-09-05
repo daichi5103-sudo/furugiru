@@ -1,6 +1,7 @@
 import Link from "next/link";
 import AdSense from "@/components/AdSense";
 import BrandsClient from "@/components/BrandsClient";
+import { RAKUTEN_ROOM_URL } from "@/lib/rakuten";
 
 export const metadata = {
   title: "ブランド別タグ図鑑 | FURUGIRU",
@@ -85,6 +86,9 @@ export default function BrandsPage() {
         <p style={{ fontSize: 10, color: "rgba(245,240,232,.2)", letterSpacing: "0.05em" }}>
           © 2026 FURUGIRU — 掲載情報は参考であり、購入の最終判断はご自身でお願いします。
         </p>
+        <a href={RAKUTEN_ROOM_URL} target="_blank" rel="noopener noreferrer" style={{ fontSize: 9, color: "rgba(245,240,232,.25)", letterSpacing: "0.1em", textDecoration: "none" }}>
+          楽天ROOM →
+        </a>
       </footer>
     </div>
   );

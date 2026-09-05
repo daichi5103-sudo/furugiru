@@ -4,6 +4,7 @@ import MarketCard from "@/components/MarketCard";
 import RakutenSection from "@/components/RakutenSection";
 import AdSense from "@/components/AdSense";
 import { MARKETS } from "@/lib/markets";
+import { RAKUTEN_ROOM_URL } from "@/lib/rakuten";
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -169,6 +170,7 @@ export default function SearchPage({ searchParams }: Props) {
           <div style={{ display: "flex", gap: 16 }}>
             <a href="#" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(245,240,232,.2)", textDecoration: "none" }}>利用規約</a>
             <a href="#" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(245,240,232,.2)", textDecoration: "none" }}>プライバシー</a>
+            <a href={RAKUTEN_ROOM_URL} target="_blank" rel="noopener noreferrer" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(245,240,232,.2)", textDecoration: "none" }}>楽天ROOM</a>
           </div>
         </div>
       </footer>

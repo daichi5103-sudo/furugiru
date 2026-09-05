@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getBrandBySlug } from "@/lib/brands";
 import { getCheckerMode, TAG_CHECKER_SLUGS, FAKE_CHECKER_SLUGS } from "@/lib/tagChecker";
 import TagCheckerClient from "@/components/TagCheckerClient";
+import { RAKUTEN_ROOM_URL } from "@/lib/rakuten";
 
 interface Props {
   params: { slug: string };
@@ -105,6 +106,9 @@ export default function TagCheckerPage({ params }: Props) {
         <p style={{ fontSize: 10, color: "rgba(245,240,232,.2)", letterSpacing: "0.05em" }}>
           © 2026 FURUGIRU — 掲載情報は参考です。購入の最終判断はご自身でお願いします。
         </p>
+        <a href={RAKUTEN_ROOM_URL} target="_blank" rel="noopener noreferrer" style={{ fontSize: 9, color: "rgba(245,240,232,.25)", letterSpacing: "0.1em", textDecoration: "none" }}>
+          楽天ROOM →
+        </a>
       </footer>
     </div>
   );

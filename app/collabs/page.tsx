@@ -3,6 +3,7 @@ import { join } from "path";
 import Link from "next/link";
 import AdSense from "@/components/AdSense";
 import CollabClient from "@/components/CollabClient";
+import { RAKUTEN_ROOM_URL } from "@/lib/rakuten";
 
 type RssItem = { title: string; link: string; date: string; source: string };
 type CollabRss = { updatedAt: string; items: RssItem[] };
@@ -171,6 +172,9 @@ export default function CollabPage() {
         <p style={{ fontSize: 10, color: "rgba(245,240,232,.2)", letterSpacing: "0.05em" }}>
           © 2026 FURUGIRU — 掲載情報は参考です。実際の取引価格は市場により異なります。
         </p>
+        <a href={RAKUTEN_ROOM_URL} target="_blank" rel="noopener noreferrer" style={{ fontSize: 9, color: "rgba(245,240,232,.25)", letterSpacing: "0.1em", textDecoration: "none" }}>
+          楽天ROOM →
+        </a>
       </footer>
     </div>
   );

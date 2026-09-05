@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { fetchLotteryEvents, isSupabaseConfigured, LotteryEvent } from "@/lib/supabase";
+import { RAKUTEN_ROOM_URL } from "@/lib/rakuten";
 
 export const metadata = {
   title: "抽選・発売カレンダー | FURUGIRU",
@@ -191,6 +192,9 @@ export default async function CalendarPage() {
         <p style={{ fontSize: 10, color: "rgba(245,240,232,.2)", letterSpacing: "0.05em" }}>
           © 2026 FURUGIRU — 抽選情報は参考です。必ず公式サイトをご確認ください。
         </p>
+        <a href={RAKUTEN_ROOM_URL} target="_blank" rel="noopener noreferrer" style={{ fontSize: 9, color: "rgba(245,240,232,.25)", letterSpacing: "0.1em", textDecoration: "none" }}>
+          楽天ROOM →
+        </a>
       </footer>
     </div>
   );

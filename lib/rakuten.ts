@@ -1,3 +1,5 @@
+export const RAKUTEN_ROOM_URL = "https://room.rakuten.co.jp/room_bc477dc02b";
+
 export interface RakutenItem {
   itemName: string;
   itemPrice: number;
